@@ -1,0 +1,82 @@
+# Xcode
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcworkspace/contents.xcworkspacedata
+
+# Build
+build/
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# CocoaPods
+Pods/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Carthage
+Carthage/Build/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# macOS
+.DS_Store
+*.swp
+*~.nib
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+
+# xcuser_data
+xcuserdata/
+
+# Playgrounds
+*.xcuserstate
+
+# Xcode patches
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+
+# Secrets
+*.pem
+*.p12
+*.key
+*.mobileprovision
+*.provisionprofile
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+*.idea/
+*.vscode/
+
+# Logs
+*.log
+*.trace
+
+# Testing
+*.gcda
+*.gcno
+*.gcov
+coverage/
+
+# Documentation
+Docs/api/
