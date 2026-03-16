@@ -49,34 +49,59 @@ class ExportService: ObservableObject {
 
             // Fetch quantity samples for selected types
             for typeId in configuration.dataTypes {
-                guard let identifier = HKQuantityTypeIdentifier(rawValue: typeId) else { continue }
+                // Try as quantity type first
+                if let quantityIdentifier = HKQuantityTypeIdentifier(rawValue: typeId) {
+                    do {
+                        let samples = try await healthKitService.fetchQuantitySamples(
+                            type: quantityIdentifier,
+                            from: start,
+                            to: end
+                        )
+                        let healthDataSamples = samples.map { HealthDataSample(from: $0, typeId: typeId) }
+                        allSamples.append(contentsOf: healthDataSamples)
+                        totalRecords += samples.count
+                    } catch {
+                        print("Failed to fetch quantity type \(typeId): \(error)")
+                    }
+                }
+            }
 
-                do {
-                    let samples = try await healthKitService.fetchQuantitySamples(
-                        type: identifier,
-                        from: start,
-                        to: end
-                    )
-
-                    let healthDataSamples = samples.map { HealthDataSample(from: $0, typeId: typeId) }
-                    allSamples.append(contentsOf: healthDataSamples)
-                    totalRecords += samples.count
-                } catch {
-                    print("Failed to fetch \(typeId): \(error)")
+            // Fetch category samples for category types
+            for typeId in configuration.dataTypes {
+                if let categoryIdentifier = HKCategoryTypeIdentifier(rawValue: typeId) {
+                    do {
+                        let samples = try await healthKitService.fetchCategorySamples(
+                            type: categoryIdentifier,
+                            from: start,
+                            to: end
+                        )
+                        let healthDataSamples = samples.map { HealthDataSample(from: $0, typeId: typeId) }
+                        allSamples.append(contentsOf: healthDataSamples)
+                        totalRecords += samples.count
+                    } catch {
+                        print("Failed to fetch category type \(typeId): \(error)")
+                    }
                 }
             }
 
             await MainActor.run { exportProgress = 0.5 }
 
-            // Fetch workouts if included
+            // Fetch workouts if routes or workouts are selected
             var workouts: [WorkoutData] = []
-            if configuration.includeWorkoutRoutes {
+            // Always fetch workouts when the dataTypes includes workouts
+            let shouldFetchWorkouts = configuration.includeWorkoutRoutes || configuration.dataTypes.contains("workouts")
+            if shouldFetchWorkouts {
                 let hkWorkouts = try await healthKitService.fetchWorkouts(from: start, to: end)
                 for workout in hkWorkouts {
-                    let route = try await healthKitService.fetchWorkoutRoute(for: workout)
-                    let routeData = route.isEmpty ? nil : RouteData(from: route)
+                    var routeData: RouteData? = nil
+                    // Only fetch routes if explicitly requested
+                    if configuration.includeWorkoutRoutes {
+                        let route = try await healthKitService.fetchWorkoutRoute(for: workout)
+                        routeData = route.isEmpty ? nil : RouteData(from: route)
+                    }
                     workouts.append(WorkoutData(from: workout, routeData: routeData))
                 }
+                totalRecords += workouts.count
             }
 
             await MainActor.run { exportProgress = 0.7 }
@@ -101,27 +126,55 @@ class ExportService: ObservableObject {
 
             // Save to destinations
             var finalURL: URL?
+            var destinationResults: [DestinationResult] = []
+
             for destination in configuration.destinations where destination.isEnabled {
                 do {
-                    finalURL = try await exportToDestination(data: data, filename: filename, destination: destination)
+                    let url = try await exportToDestination(data: data, filename: filename, destination: destination, format: configuration.format)
+                    finalURL = url
+                    destinationResults.append(DestinationResult(
+                        destinationName: destination.name,
+                        destinationType: destination.type.rawValue,
+                        success: true,
+                        error: nil,
+                        recordsExported: totalRecords
+                    ))
                 } catch {
+                    destinationResults.append(DestinationResult(
+                        destinationName: destination.name,
+                        destinationType: destination.type.rawValue,
+                        success: false,
+                        error: error,
+                        recordsExported: 0
+                    ))
                     print("Failed to export to \(destination.name): \(error)")
                 }
             }
 
             // If no destinations, save locally
-            if finalURL == nil {
+            if finalURL == nil && destinationResults.isEmpty {
                 finalURL = try saveLocally(data: data, filename: filename)
+                destinationResults.append(DestinationResult(
+                    destinationName: "Local Files",
+                    destinationType: "Local",
+                    success: true,
+                    error: nil,
+                    recordsExported: totalRecords
+                ))
             }
 
             let duration = Date().timeIntervalSince(startTime)
 
+            // Overall success is true if at least one destination succeeded
+            let overallSuccess = destinationResults.isEmpty ? true : destinationResults.contains { $0.success }
+
             let result = ExportResult(
-                success: true,
+                success: overallSuccess,
                 fileURL: finalURL,
                 error: nil,
-                recordsExported: totalRecords + workouts.count,
-                duration: duration
+                recordsExported: totalRecords,
+                duration: duration,
+                destinationResults: destinationResults
             )
 
             await MainActor.run {
@@ -139,7 +192,8 @@ class ExportService: ObservableObject {
                 fileURL: nil,
                 error: error,
                 recordsExported: 0,
-                duration: duration
+                duration: duration,
+                destinationResults: []
             )
 
             await MainActor.run {
@@ -163,12 +217,12 @@ class ExportService: ObservableObject {
 
         for sample in samples {
             let row = [
-                sample.typeId,
-                String(sample.value),
-                sample.unit,
-                ISO8601DateFormatter().string(from: sample.startDate),
-                ISO8601DateFormatter().string(from: sample.endDate),
-                sample.source.replacingOccurrences(of: ",", with: ";")
+                escapeCSVField(sample.typeId),
+                escapeCSVField(String(sample.value)),
+                escapeCSVField(sample.unit),
+                escapeCSVField(ISO8601DateFormatter().string(from: sample.startDate)),
+                escapeCSVField(ISO8601DateFormatter().string(from: sample.endDate)),
+                escapeCSVField(sample.source)
             ]
             csv += row.joined(separator: ",") + "\n"
         }
@@ -180,18 +234,28 @@ class ExportService: ObservableObject {
 
             for workout in workouts {
                 let row = [
-                    workout.workoutType,
-                    ISO8601DateFormatter().string(from: workout.startDate),
-                    ISO8601DateFormatter().string(from: workout.endDate),
-                    String(format: "%.1f", workout.duration),
-                    String(format: "%.1f", workout.totalEnergyBurned ?? 0),
-                    String(format: "%.1f", workout.totalDistance ?? 0)
+                    escapeCSVField(workout.workoutType),
+                    escapeCSVField(ISO8601DateFormatter().string(from: workout.startDate)),
+                    escapeCSVField(ISO8601DateFormatter().string(from: workout.endDate)),
+                    escapeCSVField(String(format: "%.1f", workout.duration)),
+                    escapeCSVField(String(format: "%.1f", workout.totalEnergyBurned ?? 0)),
+                    escapeCSVField(String(format: "%.1f", workout.totalDistance ?? 0))
                 ]
                 csv += row.joined(separator: ",") + "\n"
             }
         }
 
         return Data(csv.utf8)
+    }
+
+    /// Properly escape a CSV field
+    private func escapeCSVField(_ field: String) -> String {
+        let needsEscaping = field.contains(",") || field.contains("\"") || field.contains("\n") || field.contains("\r")
+        if !needsEscaping {
+            return field
+        }
+        // Escape quotes by doubling them and wrap in quotes
+        return "\"" + field.replacingOccurrences(of: "\"", with: "\"\"") + "\""
     }
 
     private func exportToJSON(
@@ -265,7 +329,8 @@ class ExportService: ObservableObject {
     private func exportToDestination(
         data: Data,
         filename: String,
-        destination: ExportDestination
+        destination: ExportDestination,
+        format: ExportFormat
     ) async throws -> URL {
         switch destination.type {
         case .localFiles:
@@ -275,7 +340,7 @@ class ExportService: ObservableObject {
             return try saveToICloud(data: data, filename: filename, folder: destination.configuration.folderPath)
 
         case .restAPI:
-            return try await sendToAPI(data: data, destination: destination)
+            return try await sendToAPI(data: data, destination: destination, format: format)
 
         default:
             throw ExportError.unsupportedDestination
@@ -316,7 +381,7 @@ class ExportService: ObservableObject {
         }
     }
 
-    private func sendToAPI(data: Data, destination: ExportDestination) async throws -> URL {
+    private func sendToAPI(data: Data, destination: ExportDestination, format: ExportFormat) async throws -> URL {
         guard let urlString = destination.configuration.apiURL,
               let url = URL(string: urlString) else {
             throw ExportError.invalidURL
@@ -326,8 +391,8 @@ class ExportService: ObservableObject {
         request.httpMethod = destination.configuration.httpMethod.rawValue
         request.httpBody = data
 
-        // Set content type based on format
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        // Set content type based on export format
+        request.setValue(format.mimeType, forHTTPHeaderField: "Content-Type")
 
         // Add custom headers
         for (key, value) in destination.configuration.headers {
@@ -379,6 +444,7 @@ enum ExportError: LocalizedError {
     case invalidURL
     case apiError
     case fileWriteFailed
+    case validationError(String)
 
     var errorDescription: String? {
         switch self {
@@ -392,6 +458,8 @@ enum ExportError: LocalizedError {
             return "API request failed"
         case .fileWriteFailed:
             return "Failed to write file"
+        case .validationError(let message):
+            return message
         }
     }
 }

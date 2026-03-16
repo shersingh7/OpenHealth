@@ -15,6 +15,8 @@ struct ExportView: View {
     @State private var showingDataTypes = false
     @State private var showingDateRange = false
     @State private var showingDestinations = false
+    @State private var showingExportResult = false
+    @State private var validationErrors: [String] = []
 
     init() {
         _viewModel = StateObject(wrappedValue: ExportViewModel())
@@ -170,6 +172,19 @@ struct ExportView: View {
             .sheet(isPresented: $showingDestinations) {
                 DestinationPickerView(destinations: $viewModel.configuration.destinations)
             }
+            .sheet(isPresented: $showingExportResult) {
+                if let result = viewModel.lastExportResult {
+                    ExportResultSheet(result: result)
+                }
+            }
+            .alert("Validation Error", isPresented: .init(
+                get: { !validationErrors.isEmpty },
+                set: { if !$0 { validationErrors = [] } }
+            )) {
+                Button("OK", role: .cancel) { validationErrors = [] }
+            } message: {
+                Text(validationErrors.joined(separator: "\n"))
+            }
             .task {
                 await viewModel.loadAvailableTypes()
             }
@@ -177,8 +192,121 @@ struct ExportView: View {
     }
 
     private func performExport() async {
+        // Validate destinations before export
+        let errors = viewModel.validateDestinations()
+        if !errors.isEmpty {
+            validationErrors = errors
+            return
+        }
+
         let result = await viewModel.export()
-        // Handle result - show success/error alert
+        if result != nil {
+            showingExportResult = true
+        }
+    }
+}
+
+// MARK: - Export Result Sheet
+
+struct ExportResultSheet: View {
+    let result: ExportResult
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            List {
+                Section {
+                    HStack {
+                        Image(systemName: result.success ? "checkmark.circle.fill" : "xmark.circle.fill")
+                            .foregroundStyle(result.success ? .green : .red)
+                            .font(.title)
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(result.success ? "Export Complete" : "Export Failed")
+                                .font(.headline)
+
+                            if let error = result.error {
+                                Text(error.localizedDescription)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                    .padding(.vertical, 8)
+                }
+
+                if result.success {
+                    Section("Summary") {
+                        LabeledContent("Records Exported") {
+                            Text("\(result.recordsExported)")
+                                .font(.body.bold())
+                        }
+
+                        LabeledContent("Duration") {
+                            Text(String(format: "%.2f seconds", result.duration))
+                        }
+
+                        if let url = result.fileURL {
+                            LabeledContent("Saved To") {
+                                Text(url.lastPathComponent)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+
+                    if !result.destinationResults.isEmpty {
+                        Section("Destinations") {
+                            ForEach(result.destinationResults, id: \.destinationName) { destResult in
+                                HStack {
+                                    Image(systemName: destResult.success ? "checkmark.circle.fill" : "xmark.circle.fill")
+                                        .foregroundStyle(destResult.success ? .green : .red)
+
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(destResult.destinationName)
+                                            .font(.subheadline)
+
+                                        Text(destResult.destinationType)
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                    }
+
+                                    Spacer()
+
+                                    if let error = destResult.error {
+                                        Text(error.localizedDescription)
+                                            .font(.caption2)
+                                            .foregroundStyle(.red)
+                                            .lineLimit(1)
+                                    } else {
+                                        Text("\(destResult.recordsExported) records")
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if let url = result.fileURL {
+                    Section {
+                        ShareLink(item: url) {
+                            Label("Share Export", systemImage: "square.and.arrow.up")
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Export Result")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -189,54 +317,73 @@ class ExportViewModel: ObservableObject {
     @Published var configuration = ExportConfiguration()
     @Published var isExporting = false
     @Published var availableTypes: [HealthDataType] = []
+    @Published var lastExportResult: ExportResult?
+    @Published var showResult: Bool = false
 
-    private let healthKitService = HealthKitService()
-    private let exportService = ExportService()
+    private let healthKitService: HealthKitService
+    private let exportService: ExportService
+
+    init(healthKitService: HealthKitService = HealthKitService(), exportService: ExportService = ExportService()) {
+        self.healthKitService = healthKitService
+        self.exportService = exportService
+    }
 
     func loadAvailableTypes() async {
         let identifiers = await healthKitService.getAvailableDataTypes()
-        availableTypes = identifiers.compactMap { createHealthDataType(for: $0) }
+        availableTypes = identifiers.map { HealthTypeMetadata.createHealthDataType(for: $0) }
+    }
+
+    /// Validate all enabled destinations
+    func validateDestinations() -> [String] {
+        var errors: [String] = []
+        for destination in configuration.destinations where destination.isEnabled {
+            let validation = destination.validateConfiguration()
+            if case .invalid(let message) = validation {
+                errors.append("\(destination.name): \(message)")
+            }
+        }
+        return errors
     }
 
     func export() async -> ExportResult? {
+        // Validate destinations first
+        let validationErrors = validateDestinations()
+        if !validationErrors.isEmpty {
+            return ExportResult(
+                success: false,
+                fileURL: nil,
+                error: ExportError.validationError(validationErrors.joined(separator: "\n")),
+                recordsExported: 0,
+                duration: 0,
+                destinationResults: []
+            )
+        }
+
         isExporting = true
         defer { isExporting = false }
 
         do {
             let result = try await exportService.export(configuration: configuration)
+            await MainActor.run {
+                lastExportResult = result
+                showResult = true
+            }
             return result
         } catch {
-            return ExportResult(success: false, fileURL: nil, error: error, recordsExported: 0, duration: 0)
+            let result = ExportResult(
+                success: false,
+                fileURL: nil,
+                error: error,
+                recordsExported: 0,
+                duration: 0,
+                destinationResults: []
+            )
+            await MainActor.run {
+                lastExportResult = result
+                showResult = true
+            }
+            return result
         }
-    }
-
-    private func createHealthDataType(for identifier: HKQuantityTypeIdentifier) -> HealthDataType? {
-        let displayName = identifier.rawValue
-            .replacingOccurrences(of: "HKQuantityTypeIdentifier", with: "")
-            .replacingOccurrences(of: "HKCategoryTypeIdentifier", with: "")
-            .replacingOccurrences(of: "([A-Z])", with: " $1", options: .regularExpression)
-            .trimmingCharacters(in: .whitespaces)
-            .capitalized
-
-        return HealthDataType(
-            id: identifier.rawValue,
-            hkIdentifier: identifier.rawValue,
-            displayName: displayName,
-            category: categorize(identifier: identifier),
-            unit: "",
-            description: ""
-        )
-    }
-
-    private func categorize(identifier: HKQuantityTypeIdentifier) -> HealthDataCategory {
-        let activityTypes: Set<HKQuantityTypeIdentifier> = [
-            .stepCount, .distanceWalkingRunning, .activeEnergyBurned, .basalEnergyBurned,
-            .flightsClimbed, .appleExerciseTime, .appleMoveTime, .appleStandTime
-        ]
-        if activityTypes.contains(identifier) { return .activity }
-        if identifier == .heartRate || identifier == .restingHeartRate { return .cardiovascular }
-        if identifier == .bodyMass || identifier == .height { return .bodyMeasurements }
-        return .healthRecords
     }
 }
 

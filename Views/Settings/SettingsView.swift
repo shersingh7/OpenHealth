@@ -53,15 +53,27 @@ struct SettingsView: View {
                             Text(format.rawValue).tag(format)
                         }
                     }
+                    .onChange(of: viewModel.defaultFormat) { _, _ in
+                        viewModel.saveSettings()
+                    }
 
                     Picker("Default Date Range", selection: $viewModel.defaultDateRange) {
                         ForEach(DateRangePreset.allCases) { range in
                             Text(range.rawValue).tag(range)
                         }
                     }
+                    .onChange(of: viewModel.defaultDateRange) { _, _ in
+                        viewModel.saveSettings()
+                    }
 
                     Toggle("Include Metadata", isOn: $viewModel.includeMetadata)
+                        .onChange(of: viewModel.includeMetadata) { _, _ in
+                            viewModel.saveSettings()
+                        }
                     Toggle("Include Workout Routes", isOn: $viewModel.includeWorkoutRoutes)
+                        .onChange(of: viewModel.includeWorkoutRoutes) { _, _ in
+                            viewModel.saveSettings()
+                        }
                 }
 
                 // Storage
@@ -203,11 +215,23 @@ class SettingsViewModel: ObservableObject {
             defaultDateRange = range
         }
 
-        includeMetadata = UserDefaults.standard.bool(forKey: "includeMetadata")
-        includeWorkoutRoutes = UserDefaults.standard.bool(forKey: "includeWorkoutRoutes")
+        // Only override defaults if the key actually exists
+        if UserDefaults.standard.object(forKey: "includeMetadata") != nil {
+            includeMetadata = UserDefaults.standard.bool(forKey: "includeMetadata")
+        }
+        if UserDefaults.standard.object(forKey: "includeWorkoutRoutes") != nil {
+            includeWorkoutRoutes = UserDefaults.standard.bool(forKey: "includeWorkoutRoutes")
+        }
 
         // Load available types count
         availableTypesCount = UserDefaults.standard.integer(forKey: "availableTypesCount")
+    }
+
+    func saveSettings() {
+        UserDefaults.standard.set(defaultFormat.rawValue, forKey: "defaultFormat")
+        UserDefaults.standard.set(defaultDateRange.rawValue, forKey: "defaultDateRange")
+        UserDefaults.standard.set(includeMetadata, forKey: "includeMetadata")
+        UserDefaults.standard.set(includeWorkoutRoutes, forKey: "includeWorkoutRoutes")
     }
 
     func clearExportCache() {

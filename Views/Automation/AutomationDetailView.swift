@@ -149,10 +149,13 @@ class AutomationDetailViewModel: ObservableObject {
 
     var isEditing: Bool
 
+    private var originalId: UUID?
+
     init(automation: Automation?) {
         self.isEditing = automation != nil
 
         if let automation = automation {
+            self.originalId = automation.id
             self.name = automation.name
             self.schedule = automation.schedule
             self.exportConfiguration = automation.exportConfiguration
@@ -163,16 +166,15 @@ class AutomationDetailViewModel: ObservableObject {
     }
 
     func toAutomation() -> Automation {
-        if isEditing {
-            var automation = Automation(
+        if isEditing, let originalId = originalId {
+            // Preserve original ID when editing
+            return Automation(
+                id: originalId,
                 name: name,
                 exportConfiguration: exportConfiguration,
                 schedule: schedule,
                 isEnabled: isEnabled
             )
-            // Preserve original ID
-            // Note: In real implementation, we'd preserve the original ID
-            return automation
         } else {
             return Automation(
                 name: name,

@@ -102,6 +102,80 @@ struct ExportDestination: Identifiable, Codable {
         self.isEnabled = isEnabled
         self.configuration = configuration
     }
+
+    /// Validate the destination configuration
+    func validateConfiguration() -> ValidationResult {
+        switch type {
+        case .localFiles:
+            return .valid
+
+        case .iCloudDrive:
+            return .valid
+
+        case .restAPI:
+            guard let urlString = configuration.apiURL, !urlString.isEmpty else {
+                return .invalid("API URL is required")
+            }
+            guard URL(string: urlString) != nil else {
+                return .invalid("Invalid API URL format")
+            }
+            return .valid
+
+        case .mqtt:
+            guard let brokerURL = configuration.brokerURL, !brokerURL.isEmpty else {
+                return .invalid("Broker URL is required")
+            }
+            guard configuration.port > 0 && configuration.port <= 65535 else {
+                return .invalid("Port must be between 1 and 65535")
+            }
+            guard let topic = configuration.topic, !topic.isEmpty else {
+                return .invalid("Topic is required")
+            }
+            return .valid
+
+        case .homeAssistant:
+            guard let url = configuration.homeAssistantURL, !url.isEmpty else {
+                return .invalid("Home Assistant URL is required")
+            }
+            guard let token = configuration.accessToken, !token.isEmpty else {
+                return .invalid("Access token is required")
+            }
+            guard let entityId = configuration.entityId, !entityId.isEmpty else {
+                return .invalid("Entity ID is required")
+            }
+            return .valid
+
+        case .googleDrive, .dropbox:
+            guard let token = configuration.accessToken, !token.isEmpty else {
+                return .invalid("Authentication is required")
+            }
+            return .valid
+
+        case .calendar:
+            return .valid
+        }
+    }
+}
+
+// MARK: - Validation Result
+
+enum ValidationResult {
+    case valid
+    case invalid(String)
+
+    var isValid: Bool {
+        switch self {
+        case .valid: return true
+        case .invalid: return false
+        }
+    }
+
+    var errorMessage: String? {
+        switch self {
+        case .valid: return nil
+        case .invalid(let message): return message
+        }
+    }
 }
 
 // MARK: - Destination Configuration
@@ -178,7 +252,7 @@ enum HTTPMethod: String, Codable {
     case GET, POST, PUT, PATCH, DELETE
 }
 
-enum AuthenticationType: String, Codable {
+enum AuthenticationType: String, CaseIterable, Codable {
     case none = "None"
     case basic = "Basic Auth"
     case bearer = "Bearer Token"

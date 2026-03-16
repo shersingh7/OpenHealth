@@ -15,7 +15,8 @@ struct DashboardView: View {
     @EnvironmentObject var exportService: ExportService
 
     init() {
-        _viewModel = StateObject(wrappedValue: DashboardViewModel(exportService: ExportService()))
+        // ViewModel will be initialized with environment objects in body
+        _viewModel = StateObject(wrappedValue: DashboardViewModel())
     }
 
     var body: some View {
@@ -78,6 +79,7 @@ struct DashboardView: View {
             }
             .navigationTitle("OpenHealth")
             .task {
+                viewModel.configure(healthKitService: healthKitService, exportService: exportService)
                 await viewModel.loadData()
             }
             .refreshable {

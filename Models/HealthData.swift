@@ -184,6 +184,36 @@ struct ExportResult {
     let error: Error?
     let recordsExported: Int
     let duration: TimeInterval
+    var destinationResults: [DestinationResult]
+
+    init(
+        success: Bool,
+        fileURL: URL?,
+        error: Error?,
+        recordsExported: Int,
+        duration: TimeInterval,
+        destinationResults: [DestinationResult] = []
+    ) {
+        self.success = success
+        self.fileURL = fileURL
+        self.error = error
+        self.recordsExported = recordsExported
+        self.duration = duration
+        self.destinationResults = destinationResults
+    }
+
+    var errorMessage: String? {
+        error?.localizedDescription
+    }
+}
+
+/// Result for a single destination
+struct DestinationResult {
+    let destinationName: String
+    let destinationType: String
+    let success: Bool
+    let error: Error?
+    let recordsExported: Int
 
     var errorMessage: String? {
         error?.localizedDescription
