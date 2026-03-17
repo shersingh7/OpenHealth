@@ -119,6 +119,44 @@ struct HealthDataSample: Identifiable, Codable {
     }
 }
 
+// MARK: - Health Data Category Sample
+
+/// Represents a category sample (sleep, symptoms, etc.)
+struct HealthDataCategorySample: Identifiable, Codable {
+    let id: UUID
+    let typeId: String
+    let value: Int
+    let startDate: Date
+    let endDate: Date
+    let source: String
+    let metadata: [String: String]?
+
+    init(from sample: HKCategorySample) {
+        self.id = sample.uuid
+        self.typeId = sample.categoryType.identifier
+        self.value = sample.value
+        self.startDate = sample.startDate
+        self.endDate = sample.endDate
+        self.source = sample.sourceRevision.source.name
+        self.metadata = sample.metadata?.mapValues { "\($0)" }
+    }
+}
+
+// MARK: - Health Data Bundle
+
+/// Bundle containing all health data for export
+struct HealthDataBundle {
+    let quantitySamples: [HealthDataSample]
+    let categorySamples: [HealthDataCategorySample]
+    let workouts: [HKWorkout]
+    let ecgReadings: [HKElectrocardiogram]
+    let activitySummaries: [HKActivitySummary]
+
+    var totalRecords: Int {
+        quantitySamples.count + categorySamples.count + workouts.count + ecgReadings.count + activitySummaries.count
+    }
+}
+
 // MARK: - Workout Data
 
 /// Represents a workout with all its metrics

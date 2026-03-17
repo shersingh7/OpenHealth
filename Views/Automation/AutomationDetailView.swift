@@ -106,7 +106,95 @@ struct AutomationDetailView: View {
                         }
                     }
 
+                    Toggle("Export All Health Data", isOn: $viewModel.exportConfiguration.exportAllAvailableTypes)
+
                     Toggle("Include Workout Routes", isOn: $viewModel.exportConfiguration.includeWorkoutRoutes)
+                }
+
+                // iCloud Folder
+                Section("iCloud Destination") {
+                    HStack {
+                        Text("Folder Path")
+                        Spacer()
+                        TextField("OpenHealth/Exports", text: $viewModel.iCloudFolderPath)
+                            .multilineTextAlignment(.trailing)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    Button {
+                        viewModel.iCloudFolderPath = "OpenHealth/DailyExports/\(Date().formatted(.dateTime.year().month().day()))"
+                    } label: {
+                        Label("Use Date-Based Folder", systemImage: "folder.badge.plus")
+                    }
+                } footer: {
+                    Text("Exports will be saved to this folder in your iCloud Drive")
+                }
+
+                // Next Run
+                if let nextRun = viewModel.schedule.nextRunDate() {
+                    Section {
+                        HStack {
+                            Label("Next Run", systemImage: "clock.arrow.circlepath")
+                            Spacer()
+                            Text(nextRun, style: .date)
+                                .foregroundStyle(.secondary)
+                        }
+
+                        if viewModel.isEditing {
+                            HStack {
+                                Label("Last Run", systemImage: "clock.arrow.2.circlepath")
+                                Spacer()
+                                if let lastRun = viewModel.lastRun {
+                                    Text(lastRun, style: .relative)
+                                        .foregroundStyle(.secondary)
+                                } else {
+                                    Text("Never")
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+
+                            if let status = viewModel.executionStatus {
+                                HStack {
+                                    Label("Status", systemImage: status.systemImage)
+                                    Spacer()
+                                    Text(status.rawValue)
+                                        .foregroundStyle(status == .completed ? .green : (status == .failed ? .red : .secondary))
+                                }
+                            }
+
+                            if let error = viewModel.lastError {
+                                Text("Error: \(error)")
+                                    .font(.caption)
+                                    .foregroundStyle(.red)
+                            }
+                        }
+                    }
+                }
+
+                // Test Button
+                Section {
+                    Button {
+                        Task {
+                            await viewModel.testAutomation()
+                        }
+                    } label: {
+                        HStack {
+                            Label("Test Now", systemImage: "play.circle.fill")
+                            Spacer()
+                            if viewModel.isTesting {
+                                ProgressView()
+                            }
+                        }
+                    }
+                    .disabled(viewModel.isTesting)
+
+                    if let testResult = viewModel.testResult {
+                        Text(testResult)
+                            .font(.caption)
+                            .foregroundStyle(testResult.contains("✅") ? .green : .red)
+                    }
+                } footer: {
+                    Text("Run this automation immediately to test the configuration")
                 }
 
                 // Enable/Disable
@@ -146,8 +234,14 @@ class AutomationDetailViewModel: ObservableObject {
     @Published var schedule: AutomationSchedule = AutomationSchedule()
     @Published var exportConfiguration: ExportConfiguration = ExportConfiguration()
     @Published var isEnabled: Bool = true
+    @Published var iCloudFolderPath: String = "OpenHealth/DailyExports"
+    @Published var isTesting: Bool = false
+    @Published var testResult: String?
 
     var isEditing: Bool
+    var lastRun: Date?
+    var executionStatus: ExecutionStatus?
+    var lastError: String?
 
     private var originalId: UUID?
 
@@ -160,29 +254,65 @@ class AutomationDetailViewModel: ObservableObject {
             self.schedule = automation.schedule
             self.exportConfiguration = automation.exportConfiguration
             self.isEnabled = automation.isEnabled
+            self.iCloudFolderPath = automation.iCloudFolderPath ?? "OpenHealth/DailyExports"
+            self.lastRun = automation.lastRun
+            self.executionStatus = automation.executionStatus
+            self.lastError = automation.lastError
         } else {
             self.name = "New Automation"
+            // Default to export all for new automations
+            self.exportConfiguration.exportAllAvailableTypes = true
+            self.exportConfiguration.dateRange = .yesterday
         }
     }
 
     func toAutomation() -> Automation {
+        // Update export configuration with iCloud folder
+        var config = exportConfiguration
+        if let iCloudDestination = config.destinations.first(where: { $0.type == .iCloudDrive }) {
+            iCloudDestination.configuration.folderPath = iCloudFolderPath
+        } else {
+            // Add iCloud destination if not present
+            let iCloudDestination = ExportDestination(
+                type: .iCloudDrive,
+                configuration: ExportDestinationConfiguration(folderPath: iCloudFolderPath)
+            )
+            config.destinations.append(iCloudDestination)
+        }
+
         if isEditing, let originalId = originalId {
-            // Preserve original ID when editing
-            return Automation(
+            // Preserve original ID and other fields when editing
+            var automation = Automation(
                 id: originalId,
                 name: name,
-                exportConfiguration: exportConfiguration,
+                exportConfiguration: config,
                 schedule: schedule,
-                isEnabled: isEnabled
+                isEnabled: isEnabled,
+                iCloudFolderPath: iCloudFolderPath
             )
+            automation.lastRun = self.lastRun
+            automation.runCount = 0 // Preserve from original if needed
+            return automation
         } else {
             return Automation(
                 name: name,
-                exportConfiguration: exportConfiguration,
+                exportConfiguration: config,
                 schedule: schedule,
-                isEnabled: isEnabled
+                isEnabled: isEnabled,
+                iCloudFolderPath: iCloudFolderPath
             )
         }
+    }
+
+    func testAutomation() async {
+        isTesting = true
+        testResult = nil
+
+        let automation = toAutomation()
+        await AutomationScheduler.shared.executeAutomation(automation)
+
+        isTesting = false
+        testResult = AutomationScheduler.shared.lastRunResult
     }
 }
 

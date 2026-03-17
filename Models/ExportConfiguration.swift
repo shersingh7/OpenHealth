@@ -133,7 +133,8 @@ enum DateRangePreset: String, CaseIterable, Identifiable, Codable {
 struct ExportConfiguration: Identifiable, Codable {
     let id: UUID
     var name: String
-    var dataTypes: Set<String>  // HealthDataType IDs
+    var dataTypes: Set<String>  // HealthDataType IDs - empty means export all
+    var exportAllAvailableTypes: Bool  // When true, export all available health data types
     var format: ExportFormat
     var dateRange: DateRangePreset
     var customStartDate: Date?
@@ -142,6 +143,7 @@ struct ExportConfiguration: Identifiable, Codable {
     var includeWorkoutRoutes: Bool
     var includeMetadata: Bool
     var summarizeData: Bool
+    var incrementalSince: Date?  // For incremental exports - only export data since this date
     var createdAt: Date
     var lastModified: Date
 
@@ -149,6 +151,7 @@ struct ExportConfiguration: Identifiable, Codable {
         id: UUID = UUID(),
         name: String = "New Export",
         dataTypes: Set<String> = [],
+        exportAllAvailableTypes: Bool = false,
         format: ExportFormat = .json,
         dateRange: DateRangePreset = .thisMonth,
         customStartDate: Date? = nil,
@@ -156,11 +159,13 @@ struct ExportConfiguration: Identifiable, Codable {
         destinations: [ExportDestination] = [],
         includeWorkoutRoutes: Bool = true,
         includeMetadata: Bool = true,
-        summarizeData: Bool = false
+        summarizeData: Bool = false,
+        incrementalSince: Date? = nil
     ) {
         self.id = id
         self.name = name
         self.dataTypes = dataTypes
+        self.exportAllAvailableTypes = exportAllAvailableTypes
         self.format = format
         self.dateRange = dateRange
         self.customStartDate = customStartDate
@@ -169,6 +174,7 @@ struct ExportConfiguration: Identifiable, Codable {
         self.includeWorkoutRoutes = includeWorkoutRoutes
         self.includeMetadata = includeMetadata
         self.summarizeData = summarizeData
+        self.incrementalSince = incrementalSince
         self.createdAt = Date()
         self.lastModified = Date()
     }

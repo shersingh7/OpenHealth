@@ -7,6 +7,33 @@
 
 import Foundation
 
+// MARK: - Execution Status
+
+enum ExecutionStatus: String, Codable {
+    case pending = "Pending"
+    case running = "Running"
+    case completed = "Completed"
+    case failed = "Failed"
+    
+    var systemImage: String {
+        switch self {
+        case .pending: return "clock"
+        case .running: return "play.circle.fill"
+        case .completed: return "checkmark.circle.fill"
+        case .failed: return "xmark.circle.fill"
+        }
+    }
+    
+    var color: String {
+        switch self {
+        case .pending: return "gray"
+        case .running: return "blue"
+        case .completed: return "green"
+        case .failed: return "red"
+        }
+    }
+}
+
 // MARK: - Automation
 
 /// Represents a scheduled automation for automatic exports
@@ -16,36 +43,52 @@ struct Automation: Identifiable, Codable {
     var exportConfiguration: ExportConfiguration
     var schedule: AutomationSchedule
     var isEnabled: Bool
+    var executionStatus: ExecutionStatus
+    var retryCount: Int
+    var maxRetries: Int
     var lastRun: Date?
     var nextRun: Date?
     var runCount: Int
     var lastError: String?
     var createdAt: Date
     var lastModified: Date
+    var iCloudFolderPath: String?  // Custom iCloud folder for exports
 
     init(
         id: UUID = UUID(),
         name: String = "New Automation",
         exportConfiguration: ExportConfiguration = ExportConfiguration(),
         schedule: AutomationSchedule = AutomationSchedule(),
-        isEnabled: Bool = true
+        isEnabled: Bool = true,
+        iCloudFolderPath: String? = nil
     ) {
         self.id = id
         self.name = name
         self.exportConfiguration = exportConfiguration
         self.schedule = schedule
         self.isEnabled = isEnabled
+        self.executionStatus = .pending
+        self.retryCount = 0
+        self.maxRetries = 3
         self.lastRun = nil
         self.nextRun = schedule.nextRunDate()
         self.runCount = 0
         self.lastError = nil
         self.createdAt = Date()
         self.lastModified = Date()
+        self.iCloudFolderPath = iCloudFolderPath
+    }
+
+    mutating func markRunning() {
+        executionStatus = .running
+        lastModified = Date()
     }
 
     mutating func markCompleted() {
         lastRun = Date()
         runCount += 1
+        retryCount = 0
+        executionStatus = .completed
         nextRun = schedule.nextRunDate()
         lastError = nil
         lastModified = Date()
@@ -54,6 +97,13 @@ struct Automation: Identifiable, Codable {
     mutating func markFailed(error: String) {
         lastRun = Date()
         lastError = error
+        retryCount += 1
+        executionStatus = retryCount >= maxRetries ? .failed : .pending
+        lastModified = Date()
+    }
+    
+    mutating func resetForRetry() {
+        executionStatus = .pending
         lastModified = Date()
     }
 }

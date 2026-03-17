@@ -47,39 +47,48 @@ class ExportService: ObservableObject {
             // Export progress: 10% fetching, 80% processing, 10% writing
             await MainActor.run { exportProgress = 0.1 }
 
-            // Fetch quantity samples for selected types
-            for typeId in configuration.dataTypes {
-                // Try as quantity type first
-                if let quantityIdentifier = HKQuantityTypeIdentifier(rawValue: typeId) {
-                    do {
-                        let samples = try await healthKitService.fetchQuantitySamples(
-                            type: quantityIdentifier,
-                            from: start,
-                            to: end
-                        )
-                        let healthDataSamples = samples.map { HealthDataSample(from: $0, typeId: typeId) }
-                        allSamples.append(contentsOf: healthDataSamples)
-                        totalRecords += samples.count
-                    } catch {
-                        print("Failed to fetch quantity type \(typeId): \(error)")
+            // If exportAllAvailableTypes is true OR dataTypes is empty, fetch all data
+            if configuration.exportAllAvailableTypes || configuration.dataTypes.isEmpty {
+                print("Exporting all available health data types...")
+                let bundle = try await healthKitService.fetchAllHealthData(from: start, to: end)
+                allSamples = bundle.quantitySamples
+                totalRecords = bundle.totalRecords
+                print("Fetched \(totalRecords) total records")
+            } else {
+                // Fetch quantity samples for selected types
+                for typeId in configuration.dataTypes {
+                    // Try as quantity type first
+                    if let quantityIdentifier = HKQuantityTypeIdentifier(rawValue: typeId) {
+                        do {
+                            let samples = try await healthKitService.fetchQuantitySamples(
+                                type: quantityIdentifier,
+                                from: start,
+                                to: end
+                            )
+                            let healthDataSamples = samples.map { HealthDataSample(from: $0, typeId: typeId) }
+                            allSamples.append(contentsOf: healthDataSamples)
+                            totalRecords += samples.count
+                        } catch {
+                            print("Failed to fetch quantity type \(typeId): \(error)")
+                        }
                     }
                 }
-            }
 
-            // Fetch category samples for category types
-            for typeId in configuration.dataTypes {
-                if let categoryIdentifier = HKCategoryTypeIdentifier(rawValue: typeId) {
-                    do {
-                        let samples = try await healthKitService.fetchCategorySamples(
-                            type: categoryIdentifier,
-                            from: start,
-                            to: end
-                        )
-                        let healthDataSamples = samples.map { HealthDataSample(from: $0, typeId: typeId) }
-                        allSamples.append(contentsOf: healthDataSamples)
-                        totalRecords += samples.count
-                    } catch {
-                        print("Failed to fetch category type \(typeId): \(error)")
+                // Fetch category samples for category types
+                for typeId in configuration.dataTypes {
+                    if let categoryIdentifier = HKCategoryTypeIdentifier(rawValue: typeId) {
+                        do {
+                            let samples = try await healthKitService.fetchCategorySamples(
+                                type: categoryIdentifier,
+                                from: start,
+                                to: end
+                            )
+                            let healthDataSamples = samples.map { HealthDataSample(from: $0, typeId: typeId) }
+                            allSamples.append(contentsOf: healthDataSamples)
+                            totalRecords += samples.count
+                        } catch {
+                            print("Failed to fetch category type \(typeId): \(error)")
+                        }
                     }
                 }
             }

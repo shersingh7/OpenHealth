@@ -32,30 +32,64 @@ struct ExportView: View {
 
                 // Data Types
                 Section {
-                    Button {
-                        showingDataTypes = true
-                    } label: {
-                        HStack {
-                            Label("Data Types", systemImage: "heart.text.square.fill")
+                    if viewModel.configuration.exportAllAvailableTypes {
+                        Button {
+                            // Already exporting all, no need to select
+                        } label: {
+                            HStack {
+                                Label("Data Types", systemImage: "heart.text.square.fill")
 
-                            Spacer()
+                                Spacer()
 
-                            if viewModel.configuration.dataTypes.isEmpty {
-                                Text("Select types")
-                                    .foregroundStyle(.secondary)
-                            } else {
-                                Text("\(viewModel.configuration.dataTypes.count) types")
+                                Text("All Types")
                                     .foregroundStyle(.blue)
-                            }
 
-                            Image(systemName: "chevron.right")
-                                .foregroundStyle(.secondary)
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundStyle(.green)
+                            }
+                        }
+                        .disabled(true)
+                    } else {
+                        Button {
+                            showingDataTypes = true
+                        } label: {
+                            HStack {
+                                Label("Data Types", systemImage: "heart.text.square.fill")
+
+                                Spacer()
+
+                                if viewModel.configuration.dataTypes.isEmpty {
+                                    Text("Select types")
+                                        .foregroundStyle(.secondary)
+                                } else {
+                                    Text("\(viewModel.configuration.dataTypes.count) types")
+                                        .foregroundStyle(.blue)
+                                }
+
+                                Image(systemName: "chevron.right")
+                                    .foregroundStyle(.secondary)
+                            }
                         }
                     }
                 } header: {
                     Text("What to Export")
                 } footer: {
-                    Text("Select the health data types you want to export")
+                    Text(viewModel.configuration.exportAllAvailableTypes 
+                         ? "All available health data types will be exported"
+                         : "Select the health data types you want to export")
+                }
+
+                // Export All Toggle
+                Section {
+                    Toggle("Export All Health Data", isOn: $viewModel.configuration.exportAllAvailableTypes)
+                        .onChange(of: viewModel.configuration.exportAllAvailableTypes) { newValue in
+                            if newValue {
+                                // Clear manual selection when switching to export all
+                                viewModel.configuration.dataTypes.removeAll()
+                            }
+                        }
+                } footer: {
+                    Text("Automatically export all available health data types including steps, heart rate, sleep, workouts, and more")
                 }
 
                 // Date Range

@@ -401,7 +401,7 @@ class HealthKitService: ObservableObject {
                     limit: 1,
                     sortDescriptors: nil
                 ) { _, samples, _ in
-                    continuation.resume(resuming: samples?.isEmpty == false)
+                    continuation.resume(returning: samples?.isEmpty == false)
                 }
 
                 healthStore.execute(query)
@@ -409,6 +409,162 @@ class HealthKitService: ObservableObject {
 
             if hasData {
                 availableTypes.insert(identifier)
+            }
+        }
+
+        return availableTypes
+    }
+
+    /// Fetch all health data (quantity types, category types, workouts, ECG, activity summaries) for a date range
+    func fetchAllHealthData(from startDate: Date, to endDate: Date) async throws -> HealthDataBundle {
+        var allSamples: [HealthDataSample] = []
+        var allCategorySamples: [HealthDataCategorySample] = []
+        var workouts: [HKWorkout] = []
+        var ecgReadings: [HKElectrocardiogram] = []
+        var activitySummaries: [HKActivitySummary] = []
+
+        // Fetch all quantity samples
+        for identifier in Self.supportedQuantityTypes {
+            guard let type = HKQuantityType.quantityType(forIdentifier: identifier) else { continue }
+            do {
+                let samples = try await fetchQuantitySamples(type: identifier, from: startDate, to: endDate)
+                allSamples.append(contentsOf: samples.map { HealthDataSample(from: $0) })
+            } catch {
+                print("Failed to fetch quantity type \(identifier): \(error)")
+            }
+        }
+
+        // Fetch all category samples
+        for identifier in Self.supportedCategoryTypes {
+            guard let type = HKCategoryType.categoryType(forIdentifier: identifier) else { continue }
+            do {
+                let samples = try await fetchCategorySamples(type: identifier, from: startDate, to: endDate)
+                allCategorySamples.append(contentsOf: samples.map { HealthDataCategorySample(from: $0) })
+            } catch {
+                print("Failed to fetch category type \(identifier): \(error)")
+            }
+        }
+
+        // Fetch workouts
+        do {
+            workouts = try await fetchWorkouts(from: startDate, to: endDate, includeRoutes: true)
+        } catch {
+            print("Failed to fetch workouts: \(error)")
+        }
+
+        // Fetch ECG readings
+        do {
+            ecgReadings = try await fetchECGReadings(from: startDate, to: endDate)
+        } catch {
+            print("Failed to fetch ECG: \(error)")
+        }
+
+        // Fetch activity summaries
+        do {
+            activitySummaries = try await fetchActivitySummaries(from: startDate, to: endDate)
+        } catch {
+            print("Failed to fetch activity summaries: \(error)")
+        }
+
+        return HealthDataBundle(
+            quantitySamples: allSamples,
+            categorySamples: allCategorySamples,
+            workouts: workouts,
+            ecgReadings: ecgReadings,
+            activitySummaries: activitySummaries
+        )
+    }
+
+    /// Fetch ECG readings for a date range
+    func fetchECGReadings(from startDate: Date, to endDate: Date) async throws -> [HKElectrocardiogram] {
+        guard #available(iOS 14.0, *) else {
+            return []
+        }
+
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
+        let ecgType = HKObjectType.electrocardiogramType()
+
+        return try await withCheckedThrowingContinuation { continuation in
+            let query = HKSampleQuery(
+                sampleType: ecgType,
+                predicate: predicate,
+                limit: HKObjectQueryNoLimit,
+                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
+            ) { _, samples, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+
+                guard let ecgSamples = samples as? [HKElectrocardiogram] else {
+                    continuation.resume(returning: [])
+                    return
+                }
+
+                continuation.resume(returning: ecgSamples)
+            }
+
+            healthStore.execute(query)
+        }
+    }
+
+    /// Get all available data types (includes both quantity and category types)
+    func getAllAvailableDataTypes() async -> Set<String> {
+        var availableTypes: Set<String> = []
+
+        // Check quantity types
+        for identifier in Self.supportedQuantityTypes {
+            guard let type = HKQuantityType.quantityType(forIdentifier: identifier) else { continue }
+
+            let predicate = HKQuery.predicateForSamples(
+                withStart: Calendar.current.date(byAdding: .year, value: -10, to: Date()),
+                end: Date(),
+                options: .strictStartDate
+            )
+
+            let hasData = await withCheckedContinuation { continuation in
+                let query = HKSampleQuery(
+                    sampleType: type,
+                    predicate: predicate,
+                    limit: 1,
+                    sortDescriptors: nil
+                ) { _, samples, _ in
+                    continuation.resume(returning: samples?.isEmpty == false)
+                }
+
+                healthStore.execute(query)
+            }
+
+            if hasData {
+                availableTypes.insert(identifier.rawValue)
+            }
+        }
+
+        // Check category types
+        for identifier in Self.supportedCategoryTypes {
+            guard let type = HKCategoryType.categoryType(forIdentifier: identifier) else { continue }
+
+            let predicate = HKQuery.predicateForSamples(
+                withStart: Calendar.current.date(byAdding: .year, value: -10, to: Date()),
+                end: Date(),
+                options: .strictStartDate
+            )
+
+            let hasData = await withCheckedContinuation { continuation in
+                let query = HKSampleQuery(
+                    sampleType: type,
+                    predicate: predicate,
+                    limit: 1,
+                    sortDescriptors: nil
+                ) { _, samples, _ in
+                    continuation.resume(returning: samples?.isEmpty == false)
+                }
+
+                healthStore.execute(query)
+            }
+
+            if hasData {
+                availableTypes.insert(identifier.rawValue)
             }
         }
 

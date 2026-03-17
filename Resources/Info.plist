@@ -81,5 +81,11 @@
     <true/>
     <key>LSSupportsOpeningDocumentsInPlace</key>
     <true/>
+
+    <!-- Background Task Scheduler -->
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+        <string>com.openhealth.dailyexport</string>
+    </array>
 </dict>
 </plist>
