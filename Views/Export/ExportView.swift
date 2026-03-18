@@ -192,7 +192,7 @@ struct ExportView: View {
                         }
                     }
                     .listRowBackground(Color.red)
-                    .disabled(viewModel.configuration.dataTypes.isEmpty || viewModel.isExporting)
+                    .disabled((viewModel.configuration.dataTypes.isEmpty && !viewModel.configuration.exportAllAvailableTypes) || viewModel.isExporting)
                     .foregroundColor(.white)
                 }
             }

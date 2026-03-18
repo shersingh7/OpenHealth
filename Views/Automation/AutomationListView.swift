@@ -157,7 +157,7 @@ struct AutomationRowView: View {
 class AutomationListViewModel: ObservableObject {
     @Published var automations: [Automation] = []
 
-    private let defaultsKey = "OpenHealth_Automations"
+    private let defaultsKey = "openhealth.automations"
 
     func loadAutomations() {
         guard let data = UserDefaults.standard.data(forKey: defaultsKey) else { return }

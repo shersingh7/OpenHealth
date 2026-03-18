@@ -275,7 +275,7 @@ class AutomationDetailViewModel: ObservableObject {
             // Add iCloud destination if not present
             let iCloudDestination = ExportDestination(
                 type: .iCloudDrive,
-                configuration: ExportDestinationConfiguration(folderPath: iCloudFolderPath)
+                configuration: DestinationConfiguration(folderPath: iCloudFolderPath)
             )
             config.destinations.append(iCloudDestination)
         }
