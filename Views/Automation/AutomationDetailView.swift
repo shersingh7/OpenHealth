@@ -260,9 +260,9 @@ class AutomationDetailViewModel: ObservableObject {
             self.lastError = automation.lastError
         } else {
             self.name = "New Automation"
-            // Default to export all for new automations
+            // Default to export all health data for new automations
             self.exportConfiguration.exportAllAvailableTypes = true
-            self.exportConfiguration.dateRange = .yesterday
+            self.exportConfiguration.dateRange = .last24Hours
         }
     }
 

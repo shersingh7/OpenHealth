@@ -55,6 +55,7 @@ enum ExportFormat: String, CaseIterable, Identifiable, Codable {
 enum DateRangePreset: String, CaseIterable, Identifiable, Codable {
     case today = "Today"
     case yesterday = "Yesterday"
+    case last24Hours = "Last 24 Hours"
     case thisWeek = "This Week"
     case lastWeek = "Last Week"
     case thisMonth = "This Month"
@@ -79,6 +80,12 @@ enum DateRangePreset: String, CaseIterable, Identifiable, Codable {
         case .yesterday:
             let start = calendar.startOfDay(for: calendar.date(byAdding: .day, value: -1, to: now) ?? now)
             let end = calendar.startOfDay(for: now)
+            return (start, end)
+
+        case .last24Hours:
+            // Rolling 24-hour window from now
+            let end = now
+            let start = calendar.date(byAdding: .hour, value: -24, to: now) ?? now
             return (start, end)
 
         case .thisWeek:

@@ -255,18 +255,18 @@ class AutomationScheduler: ObservableObject {
             name: "Daily Health Export",
             exportAllAvailableTypes: true,
             format: .json,
-            dateRange: .yesterday,
+            dateRange: .last24Hours,
             destinations: [
                 ExportDestination(type: .iCloudDrive, configuration: .init(folderPath: "OpenHealth/DailyExports"))
             ]
         )
-        
+
         let schedule = AutomationSchedule(
             frequency: .daily,
             hour: 2,
             minute: 0
         )
-        
+
         return Automation(
             name: "Daily Export",
             exportConfiguration: config,
