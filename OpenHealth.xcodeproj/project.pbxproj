@@ -7,26 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA0001AA /* OpenHealthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0001AA; };
-		AA0002AA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0002AA; };
-		AA0003AA /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0003AA; };
-		AA0004AA /* ExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0004AA; };
-		AA0005AA /* DataTypeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0005AA; };
-		AA0006AA /* DateRangePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0006AA; };
-		AA0007AA /* DestinationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0007AA; };
-		AA0008AA /* AutomationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0008AA; };
-		AA0009AA /* AutomationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0009AA; };
-		AA0010AA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0010AA; };
-		AA0011AA /* Automation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0011AA; };
-		AA0012AA /* ExportConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0012AA; };
-		AA0013AA /* ExportDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0013AA; };
-		AA0014AA /* HealthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0014AA; };
-		AA0015AA /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0015AA; };
-		AA0016AA /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0016AA; };
-		AA0017AA /* AutomationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0017AA; };
-		AA0018AA /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0018AA; };
-		AA0019AA /* HealthTypeMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0019AA; };
-		AA0020AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB0020AA; };
+		AA0001AA /* OpenHealthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0001AA /* OpenHealthApp.swift */; };
+		AA0002AA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0002AA /* ContentView.swift */; };
+		AA0003AA /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0003AA /* DashboardView.swift */; };
+		AA0004AA /* ExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0004AA /* ExportView.swift */; };
+		AA0005AA /* DataTypeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0005AA /* DataTypeSelectionView.swift */; };
+		AA0006AA /* DateRangePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0006AA /* DateRangePickerView.swift */; };
+		AA0007AA /* DestinationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0007AA /* DestinationPickerView.swift */; };
+		AA0008AA /* AutomationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0008AA /* AutomationListView.swift */; };
+		AA0009AA /* AutomationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0009AA /* AutomationDetailView.swift */; };
+		AA0010AA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0010AA /* SettingsView.swift */; };
+		AA0011AA /* Automation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0011AA /* Automation.swift */; };
+		AA0012AA /* ExportConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0012AA /* ExportConfiguration.swift */; };
+		AA0013AA /* ExportDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0013AA /* ExportDestination.swift */; };
+		AA0014AA /* HealthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0014AA /* HealthData.swift */; };
+		AA0015AA /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0015AA /* HealthKitService.swift */; };
+		AA0016AA /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0016AA /* ExportService.swift */; };
+		AA0017AA /* AutomationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0017AA /* AutomationScheduler.swift */; };
+		AA0018AA /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0018AA /* DashboardViewModel.swift */; };
+		AA0019AA /* HealthTypeMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0019AA /* HealthTypeMetadata.swift */; };
+		AA0020AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB0020AA /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -194,7 +194,7 @@
 /* Begin PBXNativeTarget section */
 		EE0001AA /* OpenHealth */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FF0001AA;
+			buildConfigurationList = FF0001AA /* Build configuration list for PBXNativeTarget "OpenHealth" */;
 			buildPhases = (
 				FF0002AA /* Sources */,
 				CC0001AA /* Frameworks */,
@@ -206,7 +206,7 @@
 			);
 			name = OpenHealth;
 			productName = OpenHealth;
-			productReference = BB0022AA;
+			productReference = BB0022AA /* OpenHealth.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -224,7 +224,7 @@
 					};
 				};
 			};
-			buildConfigurationList = FF0004AA;
+			buildConfigurationList = FF0004AA /* Build configuration list for PBXProject "OpenHealth" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -233,7 +233,7 @@
 				Base,
 			);
 			mainGroup = DD0001AA;
-			productRefGroup = DD0009AA;
+			productRefGroup = DD0009AA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -352,7 +352,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7KTLKHBKD8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
@@ -366,7 +366,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.openhealth.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shersingh7.openhealth;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -381,7 +381,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7KTLKHBKD8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
@@ -395,7 +395,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.openhealth.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shersingh7.openhealth;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
