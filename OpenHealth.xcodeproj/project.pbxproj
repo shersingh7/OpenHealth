@@ -68,14 +68,6 @@
 		D1000001 = {
 			isa = PBXGroup;
 			children = (
-				D1000002 /* OpenHealth */,
-				D1000003 /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		D1000002 /* OpenHealth */ = {
-			isa = PBXGroup;
-			children = (
 				D1000004 /* App */,
 				D1000005 /* Models */,
 				D1000006 /* Services */,
@@ -83,9 +75,8 @@
 				D1000008 /* ViewModels */,
 				D1000009 /* Utilities */,
 				D100000A /* Resources */,
-				B1000015 /* Info.plist */,
+				D1000003 /* Products */,
 			);
-			path = OpenHealth;
 			sourceTree = "<group>";
 		};
 		D1000003 /* Products */ = {
@@ -157,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				B1000014 /* Assets.xcassets */,
+				B1000015 /* Info.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -412,7 +404,6 @@
 		};
 		H1000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			buildConfigurationList = F1000001;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -422,7 +413,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = OpenHealth/Resources/Info.plist;
+				INFOPLIST_FILE = Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OpenHealth;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.health-and-fitness";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -446,7 +437,6 @@
 		};
 		H1000004 /* Release */ = {
 			isa = XCBuildConfiguration;
-			buildConfigurationList = F1000001;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -456,7 +446,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = OpenHealth/Resources/Info.plist;
+				INFOPLIST_FILE = Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OpenHealth;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.health-and-fitness";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
