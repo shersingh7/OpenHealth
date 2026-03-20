@@ -12,27 +12,29 @@ import UserNotifications
 /// Service for scheduling and executing background automation tasks
 @MainActor
 class AutomationScheduler: ObservableObject {
-    
+
     // MARK: - Properties
-    
+
     static let shared = AutomationScheduler()
     static let taskIdentifier = "com.openhealth.dailyexport"
-    
+
     private let healthKitService = HealthKitService()
-    private let exportService = ExportService()
+    private let exportService: ExportService
     private let userDefaults = UserDefaults.standard
     private let automationsKey = "openhealth.automations"
-    
+
     @Published var automations: [Automation] = []
     @Published var isRunning = false
     @Published var lastRunResult: String?
-    
+
     // MARK: - Initialization
-    
+
     private init() {
+        self.exportService = ExportService(healthKitService: healthKitService)
         loadAutomations()
         requestNotificationPermissions()
     }
+    
     
     // MARK: - Task Registration
     

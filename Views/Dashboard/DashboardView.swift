@@ -405,7 +405,8 @@ struct AvailableTypesCard: View {
 }
 
 #Preview {
+    let hkService = HealthKitService()
     DashboardView()
-        .environmentObject(HealthKitService())
-        .environmentObject(ExportService())
+        .environmentObject(hkService)
+        .environmentObject(ExportService(healthKitService: hkService))
 }

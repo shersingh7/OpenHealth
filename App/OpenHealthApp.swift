@@ -12,7 +12,11 @@ import BackgroundTasks
 struct OpenHealthApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var healthKitService = HealthKitService()
-    @StateObject private var exportService = ExportService()
+    @StateObject private var exportService: ExportService
+
+    init() {
+        _exportService = StateObject(wrappedValue: ExportService(healthKitService: HealthKitService()))
+    }
 
     var body: some Scene {
         WindowGroup {

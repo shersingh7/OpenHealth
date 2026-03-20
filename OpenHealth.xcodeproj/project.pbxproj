@@ -27,6 +27,7 @@
 		AA0018AA /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0018AA /* DashboardViewModel.swift */; };
 		AA0019AA /* HealthTypeMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0019AA /* HealthTypeMetadata.swift */; };
 		AA0020AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB0020AA /* Assets.xcassets */; };
+		AA0021AA /* OpenHealth.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = BB0023AA /* OpenHealth.entitlements */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		BB0020AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BB0021AA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB0022AA /* OpenHealth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenHealth.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB0023AA /* OpenHealth.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = OpenHealth.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 			children = (
 				BB0020AA /* Assets.xcassets */,
 				BB0021AA /* Info.plist */,
+				BB0023AA /* OpenHealth.entitlements */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -248,6 +251,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA0020AA /* Assets.xcassets in Resources */,
+				AA0021AA /* OpenHealth.entitlements in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +354,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Resources/OpenHealth.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7KTLKHBKD8;
@@ -379,6 +384,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Resources/OpenHealth.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7KTLKHBKD8;

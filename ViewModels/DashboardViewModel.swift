@@ -40,7 +40,7 @@ class DashboardViewModel: ObservableObject {
     @Published var availableTypes: [HealthDataType] = []
 
     // Export Service
-    @ObservedObject var exportService: ExportService?
+    var exportService: ExportService?
 
     private var healthKitService: HealthKitService?
 
@@ -80,11 +80,6 @@ class DashboardViewModel: ObservableObject {
             await MainActor.run {
                 isLoading = false
                 error = nil
-            }
-        } catch {
-            await MainActor.run {
-                isLoading = false
-                self.error = error
             }
         }
     }
@@ -136,8 +131,9 @@ class DashboardViewModel: ObservableObject {
 
         // HRV
         if let hrvSamples = try? await healthKitService.fetchQuantitySamples(type: .heartRateVariabilitySDNN, from: yesterday, to: now),
-           let latestHRV = hrvSamples.first {
-            await MainActor.run { latestHRV = latestHRV.quantity.doubleValue(for: .millisecond()) }
+           let hrvSample = hrvSamples.first {
+            let hrv = hrvSample.quantity.doubleValue(for: HKUnit.secondUnit(with: .milli))
+            await MainActor.run { latestHRV = hrv }
         }
     }
 
@@ -159,7 +155,8 @@ class DashboardViewModel: ObservableObject {
 
     private func fetchQuantitySum(for identifier: HKQuantityTypeIdentifier, from start: Date, to end: Date, using healthKitService: HealthKitService) async throws -> Double {
         let samples = try await healthKitService.fetchQuantitySamples(type: identifier, from: start, to: end)
-        return samples.reduce(0) { $0 + $1.quantity.doubleValue(for: $1.unit) }
+        let unit = HealthTypeMetadata.preferredUnit(for: identifier.rawValue)
+        return samples.reduce(0) { $0 + $1.quantity.doubleValue(for: unit) }
     }
 
     // MARK: - Quick Export

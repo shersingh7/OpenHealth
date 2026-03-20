@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import HealthKit
 
 struct SettingsView: View {
     @EnvironmentObject var healthKitService: HealthKitService

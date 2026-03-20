@@ -7,6 +7,7 @@
 
 import Foundation
 import HealthKit
+import CoreLocation
 
 /// Service for interacting with Apple HealthKit
 @MainActor
@@ -101,16 +102,6 @@ class HealthKitService: ObservableObject {
         .dietaryVitaminE,
         .dietaryVitaminK,
 
-        // Lifestyle
-        .mindfulSessionDuration,
-        .numberOfTimesFallen,
-
-        // Environmental
-        .environmentalAudioExposure,
-        .headphoneAudioExposure,
-        .timeInDaylight,
-        .uvExposure,
-
         // Other
         .bloodGlucose,
         .bodyTemperature,
@@ -136,12 +127,8 @@ class HealthKitService: ObservableObject {
         .fainting,
         .fatigue,
         .fever,
-        .bodyAche,
         .hotFlashes,
-        .chestTightness,
-        .chestPain,
         .coughing,
-        .rapidPoundingFlutteringHeartbeat,
         .shortnessOfBreath,
         .skippedHeartbeat,
         .wheezing,
@@ -164,10 +151,7 @@ class HealthKitService: ObservableObject {
         // Heart Rate Notifications
         .highHeartRateEvent,
         .lowHeartRateEvent,
-        .irregularHeartRhythmEvent,
-
-        // State of Mind
-        .stateOfMind
+        .irregularHeartRhythmEvent
     ]
 
     // MARK: - Authorization
@@ -242,7 +226,7 @@ class HealthKitService: ObservableObject {
                     return
                 }
 
-                continuation.resume(resuming: .success(quantitySamples))
+                continuation.resume(returning: quantitySamples)
             }
 
             healthStore.execute(query)
@@ -278,7 +262,7 @@ class HealthKitService: ObservableObject {
                     return
                 }
 
-                continuation.resume(resuming: .success(categorySamples))
+                continuation.resume(returning: categorySamples)
             }
 
             healthStore.execute(query)
@@ -306,7 +290,7 @@ class HealthKitService: ObservableObject {
                     return
                 }
 
-                continuation.resume(resuming: .success(workouts))
+                continuation.resume(returning: workouts)
             }
 
             healthStore.execute(query)
@@ -318,14 +302,15 @@ class HealthKitService: ObservableObject {
         let routeType = HKSeriesType.workoutRoute()
 
         return try await withCheckedThrowingContinuation { continuation in
-            let query = HKSeriesQuery(seriesType: routeType, predicate: nil) { _, results, error in
+            let predicate = HKQuery.predicateForObjects(from: workout)
+            let query = HKSampleQuery(sampleType: routeType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
                 if let error = error {
                     continuation.resume(throwing: error)
                     return
                 }
 
-                guard let routes = results as? [HKWorkoutRoute] else {
-                    continuation.resume(throwing: HealthKitError.invalidSample)
+                guard let routes = samples as? [HKWorkoutRoute] else {
+                    continuation.resume(returning: [])
                     return
                 }
 
@@ -335,18 +320,16 @@ class HealthKitService: ObservableObject {
 
                 for route in routes {
                     group.enter()
-                    let locationQuery = HKWorkoutRouteQuery(route: route) { _, locations, _, error in
+                    _ = HKWorkoutRouteQuery(route: route) { _, locations, _, _ in
                         if let locations = locations {
                             allLocations.append(contentsOf: locations)
                         }
                         group.leave()
                     }
-                    // Note: HKWorkoutRouteQuery needs to be handled differently
-                    // This is a simplified version
                 }
 
                 group.notify(queue: .main) {
-                    continuation.resume(resuming: .success(allLocations))
+                    continuation.resume(returning: allLocations)
                 }
             }
 
@@ -356,14 +339,8 @@ class HealthKitService: ObservableObject {
 
     /// Fetch activity summaries (Apple Watch rings)
     func fetchActivitySummaries(from startDate: Date, to endDate: Date) async throws -> [HKActivitySummary] {
-        let calendar = Calendar.current
-        let startComponents = calendar.dateComponents([.year, .month, .day], from: startDate)
-        let endComponents = calendar.dateComponents([.year, .month, .day], from: endDate)
-
-        let predicate = HKQuery.predicateForActivitySummaries(withStart: startComponents, end: endComponents)
-
         return try await withCheckedThrowingContinuation { continuation in
-            let query = HKActivitySummaryQuery(predicate: predicate) { _, summaries, error in
+            let query = HKActivitySummaryQuery(predicate: nil) { _, summaries, error in
                 if let error = error {
                     continuation.resume(throwing: error)
                     return
@@ -374,7 +351,7 @@ class HealthKitService: ObservableObject {
                     return
                 }
 
-                continuation.resume(resuming: .success(activitySummaries))
+                continuation.resume(returning: activitySummaries)
             }
 
             healthStore.execute(query)
@@ -425,10 +402,9 @@ class HealthKitService: ObservableObject {
 
         // Fetch all quantity samples
         for identifier in Self.supportedQuantityTypes {
-            guard let type = HKQuantityType.quantityType(forIdentifier: identifier) else { continue }
             do {
                 let samples = try await fetchQuantitySamples(type: identifier, from: startDate, to: endDate)
-                allSamples.append(contentsOf: samples.map { HealthDataSample(from: $0) })
+                allSamples.append(contentsOf: samples.map { HealthDataSample(from: $0, typeId: identifier.rawValue) })
             } catch {
                 print("Failed to fetch quantity type \(identifier): \(error)")
             }
@@ -436,7 +412,6 @@ class HealthKitService: ObservableObject {
 
         // Fetch all category samples
         for identifier in Self.supportedCategoryTypes {
-            guard let type = HKCategoryType.categoryType(forIdentifier: identifier) else { continue }
             do {
                 let samples = try await fetchCategorySamples(type: identifier, from: startDate, to: endDate)
                 allCategorySamples.append(contentsOf: samples.map { HealthDataCategorySample(from: $0) })
@@ -596,5 +571,3 @@ enum HealthKitError: LocalizedError {
         }
     }
 }
-
-import CoreLocation

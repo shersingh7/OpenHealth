@@ -167,4 +167,92 @@ enum HealthTypeMetadata {
     static func createHealthDataType(for identifier: HKCategoryTypeIdentifier) -> HealthDataType {
         createHealthDataType(for: identifier.rawValue)
     }
+
+    // MARK: - Unit Helper
+
+    /// Get the preferred unit for a quantity type identifier
+    static func preferredUnit(for identifier: String) -> HKUnit {
+        switch identifier {
+        // Activity - count-based
+        case "stepCount", "numberOfTimesFallen":
+            return .count()
+        case "flightsClimbed":
+            return .count()
+        // Activity - distance
+        case "distanceWalkingRunning", "distanceCycling", "distanceSwimming",
+             "distanceDownhillSnowSports", "distanceWheelchair",
+             "sixMinuteWalkTestDistance", "walkingStepLength", "runningStrideLength":
+            return .meter()
+        // Activity - time
+        case "appleExerciseTime", "appleMoveTime", "appleStandTime", "mindfulSessionDuration":
+            return .minute()
+        // Activity - energy
+        case "activeEnergyBurned", "basalEnergyBurned", "dietaryEnergyConsumed":
+            return .kilocalorie()
+        // Cardiovascular
+        case "heartRate", "restingHeartRate", "walkingHeartRateAverage":
+            return HKUnit.count().unitDivided(by: .minute())
+        case "heartRateVariabilitySDNN":
+            return HKUnit.secondUnit(with: .milli)
+        case "oxygenSaturation":
+            return .percent()
+        case "bloodPressureSystolic", "bloodPressureDiastolic":
+            return .millimeterOfMercury()
+        case "vo2Max":
+            return HKUnit.liter().unitDivided(by: HKUnit.gramUnit(with: .kilo)).unitDivided(by: .minute())
+        // Body
+        case "bodyMass", "leanBodyMass":
+            return HKUnit.gramUnit(with: .kilo)
+        case "height", "waistCircumference":
+            return .meter()
+        case "bodyMassIndex":
+            return HKUnit.gramUnit(with: .kilo).unitDivided(by: HKUnit.meter().unitMultiplied(by: .meter()))
+        case "bodyFatPercentage":
+            return .percent()
+        // Mobility
+        case "walkingSpeed", "runningSpeed", "stairAscentSpeed", "stairDescentSpeed":
+            return .meter().unitDivided(by: .second())
+        case "walkingAsymmetryPercentage", "walkingDoubleSupportPercentage":
+            return .percent()
+        case "runningPower":
+            return .watt()
+        case "runningGroundContactTime", "runningVerticalOscillation":
+            return HKUnit.secondUnit(with: .milli)
+        // Respiratory
+        case "respiratoryRate":
+            return HKUnit.count().unitDivided(by: .minute())
+        case "forcedExpiratoryVolume1", "forcedVitalCapacity":
+            return .liter()
+        case "peakExpiratoryFlowRate":
+            return .liter().unitDivided(by: .minute())
+        case "inhalerUsage":
+            return .count()
+        // Nutrition
+        case "dietaryWater":
+            return .liter()
+        case "dietaryCarbohydrates", "dietaryProtein", "dietaryFatTotal",
+             "dietaryFatSaturated", "dietaryFatMonounsaturated", "dietaryFatPolyunsaturated",
+             "dietaryFiber", "dietarySugar":
+            return .gram()
+        case "dietaryCholesterol", "dietarySodium", "dietaryPotassium", "dietaryCalcium", "dietaryIron":
+            return HKUnit.gramUnit(with: .milli)
+        case "dietaryVitaminA", "dietaryVitaminB6", "dietaryVitaminB12", "dietaryVitaminC",
+             "dietaryVitaminD", "dietaryVitaminE", "dietaryVitaminK":
+            return HKUnit.gramUnit(with: .milli)
+        // Environmental
+        case "environmentalAudioExposure", "headphoneAudioExposure":
+            return HKUnit.decibelAWeightedSoundPressureLevel()
+        case "timeInDaylight":
+            return .minute()
+        // Other
+        case "bloodGlucose":
+            return HKUnit.gramUnit(with: .milli).unitDivided(by: .liter())
+        case "bodyTemperature":
+            return .degreeCelsius()
+        case "peripheralPerfusionIndex":
+            return .percent()
+        default:
+            return .count()
+        }
+    }
 }

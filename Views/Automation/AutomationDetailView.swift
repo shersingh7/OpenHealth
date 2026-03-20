@@ -42,7 +42,7 @@ struct AutomationDetailView: View {
                             "Time",
                             selection: Binding(
                                 get: {
-                                    let components = Calendar.current.dateComponents([.hour, .minute], from: Date())
+                                    var components = Calendar.current.dateComponents([.hour, .minute], from: Date())
                                     components.hour = viewModel.schedule.hour
                                     components.minute = viewModel.schedule.minute
                                     return Calendar.current.date(from: components) ?? Date()
@@ -126,8 +126,6 @@ struct AutomationDetailView: View {
                     } label: {
                         Label("Use Date-Based Folder", systemImage: "folder.badge.plus")
                     }
-                } footer: {
-                    Text("Exports will be saved to this folder in your iCloud Drive")
                 }
 
                 // Next Run
@@ -269,8 +267,8 @@ class AutomationDetailViewModel: ObservableObject {
     func toAutomation() -> Automation {
         // Update export configuration with iCloud folder
         var config = exportConfiguration
-        if let iCloudDestination = config.destinations.first(where: { $0.type == .iCloudDrive }) {
-            iCloudDestination.configuration.folderPath = iCloudFolderPath
+        if let index = config.destinations.firstIndex(where: { $0.type == .iCloudDrive }) {
+            config.destinations[index].configuration.folderPath = iCloudFolderPath
         } else {
             // Add iCloud destination if not present
             let iCloudDestination = ExportDestination(

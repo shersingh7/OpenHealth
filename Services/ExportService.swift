@@ -23,7 +23,7 @@ class ExportService: ObservableObject {
 
     // MARK: - Initialization
 
-    init(healthKitService: HealthKitService = HealthKitService()) {
+    init(healthKitService: HealthKitService) {
         self.healthKitService = healthKitService
     }
 
@@ -58,7 +58,8 @@ class ExportService: ObservableObject {
                 // Fetch quantity samples for selected types
                 for typeId in configuration.dataTypes {
                     // Try as quantity type first
-                    if let quantityIdentifier = HKQuantityTypeIdentifier(rawValue: typeId) {
+                    let quantityIdentifier = HKQuantityTypeIdentifier(rawValue: typeId)
+                    if HKQuantityType.quantityType(forIdentifier: quantityIdentifier) != nil {
                         do {
                             let samples = try await healthKitService.fetchQuantitySamples(
                                 type: quantityIdentifier,
@@ -76,7 +77,8 @@ class ExportService: ObservableObject {
 
                 // Fetch category samples for category types
                 for typeId in configuration.dataTypes {
-                    if let categoryIdentifier = HKCategoryTypeIdentifier(rawValue: typeId) {
+                    let categoryIdentifier = HKCategoryTypeIdentifier(rawValue: typeId)
+                    if HKCategoryType.categoryType(forIdentifier: categoryIdentifier) != nil {
                         do {
                             let samples = try await healthKitService.fetchCategorySamples(
                                 type: categoryIdentifier,

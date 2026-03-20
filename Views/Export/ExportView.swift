@@ -82,7 +82,7 @@ struct ExportView: View {
                 // Export All Toggle
                 Section {
                     Toggle("Export All Health Data", isOn: $viewModel.configuration.exportAllAvailableTypes)
-                        .onChange(of: viewModel.configuration.exportAllAvailableTypes) { newValue in
+                        .onChange(of: viewModel.configuration.exportAllAvailableTypes) { _, newValue in
                             if newValue {
                                 // Clear manual selection when switching to export all
                                 viewModel.configuration.dataTypes.removeAll()
@@ -205,6 +205,19 @@ struct ExportView: View {
             }
             .sheet(isPresented: $showingDestinations) {
                 DestinationPickerView(destinations: $viewModel.configuration.destinations)
+            }
+            .sheet(isPresented: $showingDateRange) {
+                DateRangePickerView(
+                    dateRange: $viewModel.configuration.dateRange,
+                    customStartDate: Binding(
+                        get: { viewModel.configuration.customStartDate ?? Date() },
+                        set: { viewModel.configuration.customStartDate = $0 }
+                    ),
+                    customEndDate: Binding(
+                        get: { viewModel.configuration.customEndDate ?? Date() },
+                        set: { viewModel.configuration.customEndDate = $0 }
+                    )
+                )
             }
             .sheet(isPresented: $showingExportResult) {
                 if let result = viewModel.lastExportResult {
@@ -357,9 +370,10 @@ class ExportViewModel: ObservableObject {
     private let healthKitService: HealthKitService
     private let exportService: ExportService
 
-    init(healthKitService: HealthKitService = HealthKitService(), exportService: ExportService = ExportService()) {
-        self.healthKitService = healthKitService
-        self.exportService = exportService
+    init() {
+        let hkService = HealthKitService()
+        self.healthKitService = hkService
+        self.exportService = ExportService(healthKitService: hkService)
     }
 
     func loadAvailableTypes() async {
@@ -422,7 +436,8 @@ class ExportViewModel: ObservableObject {
 }
 
 #Preview {
+    let hkService = HealthKitService()
     ExportView()
-        .environmentObject(HealthKitService())
-        .environmentObject(ExportService())
+        .environmentObject(hkService)
+        .environmentObject(ExportService(healthKitService: hkService))
 }

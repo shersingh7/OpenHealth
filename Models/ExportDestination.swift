@@ -137,7 +137,7 @@ struct ExportDestination: Identifiable, Codable {
             guard let url = configuration.homeAssistantURL, !url.isEmpty else {
                 return .invalid("Home Assistant URL is required")
             }
-            guard let token = configuration.accessToken, !token.isEmpty else {
+            guard let token = configuration.homeAssistantToken, !token.isEmpty else {
                 return .invalid("Access token is required")
             }
             guard let entityId = configuration.entityId, !entityId.isEmpty else {
@@ -201,7 +201,7 @@ struct DestinationConfiguration: Codable {
 
     // Home Assistant
     var homeAssistantURL: String?
-    var accessToken: String?
+    var homeAssistantToken: String?
     var entityId: String?
 
     // Google Drive / Dropbox
@@ -222,8 +222,9 @@ struct DestinationConfiguration: Codable {
         username: String? = nil,
         password: String? = nil,
         homeAssistantURL: String? = nil,
-        accessToken: String? = nil,
+        homeAssistantToken: String? = nil,
         entityId: String? = nil,
+        accessToken: String? = nil,
         refreshToken: String? = nil,
         folderId: String? = nil
     ) {
@@ -239,8 +240,9 @@ struct DestinationConfiguration: Codable {
         self.username = username
         self.password = password
         self.homeAssistantURL = homeAssistantURL
-        self.accessToken = accessToken
+        self.homeAssistantToken = homeAssistantToken
         self.entityId = entityId
+        self.accessToken = accessToken
         self.refreshToken = refreshToken
         self.folderId = folderId
     }

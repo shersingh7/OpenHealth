@@ -261,9 +261,9 @@ OpenHealth/
 
 ## Known Issues
 
-### Build Issues
-- ⚠️ **Missing Xcode Project**: The repository doesn't include `.xcodeproj` - you'll need to create one or use Swift Package Manager
-- ⚠️ **Build Errors**: Some Swift syntax issues may need fixing in `DestinationPickerView.swift`
+### Build & Setup
+- ⚠️ **Apple Developer Account Required**: HealthKit entitlement requires Apple Developer Program ($99/year) for device testing and App Store publishing
+- ⚠️ **Xcode Project**: Project is configured for manual signing with development team
 
 ### Functional Limitations
 - ⚠️ **Workout Routes**: GPX export for routes is simplified and may not capture all route data

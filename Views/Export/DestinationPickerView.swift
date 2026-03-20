@@ -202,6 +202,7 @@ struct DestinationConfigurationView: View {
                     get: { destination.configuration.username ?? "" },
                     set: { destination.configuration.username = $0.isEmpty ? nil : $0 }
                 )
+            )
 
             SecureField(
                 "Password (optional)",
@@ -229,8 +230,8 @@ struct DestinationConfigurationView: View {
             SecureField(
                 "Access Token",
                 text: Binding(
-                    get: { destination.configuration.accessToken ?? "" },
-                    set: { destination.configuration.accessToken = $0.isEmpty ? nil : $0 }
+                    get: { destination.configuration.homeAssistantToken ?? "" },
+                    set: { destination.configuration.homeAssistantToken = $0.isEmpty ? nil : $0 }
                 )
             )
 

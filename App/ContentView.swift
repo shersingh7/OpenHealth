@@ -41,7 +41,8 @@ struct ContentView: View {
 }
 
 #Preview {
+    let hkService = HealthKitService()
     ContentView()
-        .environmentObject(HealthKitService())
-        .environmentObject(ExportService())
+        .environmentObject(hkService)
+        .environmentObject(ExportService(healthKitService: hkService))
 }
