@@ -277,14 +277,19 @@ actor AutomationCoordinator {
             try? await repository.upsert(automation)
         }
 
+        // Copy all values the escaping Task needs out of the inout parameter
+        // before creating the task (Swift forbids capturing inout in escaping closures).
         let request = automation.exportConfig.asExportRequest(name: automation.name)
+        let destinations = automation.exportConfig.destinations
+        let automationID = automation.id
+        let automationName = automation.name
 
         let task = Task {
             await pipeline.run(
                 request: request,
-                destinations: automation.exportConfig.destinations,
-                automationID: automation.id,
-                automationName: automation.name
+                destinations: destinations,
+                automationID: automationID,
+                automationName: automationName
             )
         }
         // Store the real export task so BG expiration cancels pipeline work.
