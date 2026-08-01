@@ -26,7 +26,7 @@ struct ExportResultView: View {
                                     Text(result.destinationName)
                                     Spacer()
                                     Image(systemName: result.success ? "checkmark.circle.fill" : "xmark.circle.fill")
-                                        .foregroundStyle(result.success ? .green : .red)
+                                        .foregroundStyle(result.success ? Color.green : Color.red)
                                 }
                                 if let err = result.errorDescription {
                                     Text(err).font(.caption).foregroundStyle(.red)

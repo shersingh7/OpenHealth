@@ -170,7 +170,7 @@ struct AutomationEditorView: View {
                         ForEach(report.destinationResults) { result in
                             Text("\(result.destinationName): \(result.success ? "ok" : (result.errorDescription ?? "failed"))")
                                 .font(.caption2)
-                                .foregroundStyle(result.success ? .secondary : .red)
+                                .foregroundStyle(result.success ? Color.secondary : Color.red)
                         }
                     }
                 }
