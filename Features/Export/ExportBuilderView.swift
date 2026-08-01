@@ -93,7 +93,7 @@ struct ExportBuilderView: View {
 
     private var dataSection: some View {
         VStack(alignment: .leading, spacing: OHTheme.Spacing.sm) {
-            Picker("Selection", selection: Binding(
+            Picker("Selection", selection: Binding<Int>(
                 get: {
                     if case .allDetected = viewModel.request.selection { return 0 }
                     return 1

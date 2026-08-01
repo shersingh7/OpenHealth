@@ -61,7 +61,7 @@ struct AutomationEditorView: View {
                     }
                     rangePicker
 
-                    Picker("Data scope", selection: Binding(
+                    Picker("Data scope", selection: Binding<Int>(
                         get: {
                             if case .allDetected = viewModel.automation.exportConfig.selection { return 0 }
                             return 1
