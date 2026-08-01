@@ -80,3 +80,6 @@ coverage/
 
 # Documentation
 Docs/api/
+
+# Regenerable app-icon previews (source SVG + 1024 PNG are checked in)
+Resources/icon-previews/

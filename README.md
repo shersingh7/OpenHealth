@@ -1,328 +1,188 @@
 # OpenHealth
 
-<div align="center">
-  <h3>Free & Open Source Health Data Export App</h3>
+Private, local-first **health export** for **iPhone and iPad (iOS/iPadOS 17+)**.
 
-  <p>Export your Apple Health data to anywhere - No account required, no data collection, no paywall.</p>
+OpenHealth does **not** collect your data. You choose what to read from Apple Health and where export files go.
 
-  <p>
-    <a href="#features">Features</a> •
-    <a href="#installation">Installation</a> •
-    <a href="#usage">Usage</a> •
-    <a href="#automations">Automations</a> •
-    <a href="#contributing">Contributing</a> •
-    <a href="#license">License</a>
-  </p>
-
-  <p>
-    <img src="https://img.shields.io/badge/Platform-iOS%20%7C%20iPadOS%20%7C%20macOS%20%7C%20visionOS-blue" alt="Platform">
-    <img src="https://img.shields.io/badge/iOS-17%2B-green" alt="iOS 17+">
-    <img src="https://img.shields.io/badge/License-MIT-yellow" alt="License: MIT">
-    <img src="https://img.shields.io/badge/Status-Alpha-orange" alt="Status: Alpha">
-  </p>
-</div>
+**Repository:** [github.com/shersingh7/OpenHealth](https://github.com/shersingh7/OpenHealth)
+**License:** MIT
+**Status:** Architecture refresh (2026-08). **Not production-ready** until full Xcode/device gates and personal signing/capabilities are verified on a machine with Xcode.
 
 ---
 
-## Features
+## Implemented
 
-### 📊 Export 150+ Health Metrics
+| Capability | Status |
+|------------|--------|
+| Platforms | iOS / iPadOS 17+ (iPhone + iPad only) |
+| HealthKit | Read-only; request after explicit user action |
+| Metrics | Quantity + category catalog in Core (count proven by catalog tests, not a marketing “150+”) |
+| Special sections | Workouts, workout routes, ECG, activity summaries |
+| Formats | CSV, JSON (schema **v1**), GPX (routes only) |
+| Destinations | **Local Files**, **iCloud Drive**, **REST API** |
+| Automations | Manual / hourly / daily / weekly / monthly — **best-effort** background only |
+| Secrets | Keychain references only (`AfterFirstUnlockThisDeviceOnly`) |
+| Tests | Foundation-only `OpenHealthCore` MiniXCTest harness (**91** tests) |
 
-Export all your Apple Health data including:
-- **Activity**: Steps, distance, active energy, VO2 Max, flights climbed
-- **Cardiovascular**: Heart rate, resting heart rate, HRV, blood pressure, ECG
-- **Body Measurements**: Weight, height, BMI, body fat percentage
-- **Mobility**: Walking speed, step length, asymmetry, running metrics
-- **Respiratory**: Breathing rate, blood oxygen (SpO2)
-- **Sleep**: Sleep analysis, breathing disturbances
-- **Nutrition**: Dietary tracking (carbs, protein, vitamins, etc.)
-- **Workouts**: Full workout data with GPS routes (GPX export)
-- **Symptoms**: Coughing, fever, headache, and more
-- **State of Mind**: Mental health tracking data
-- **Notifications**: Heart rate alerts, irregular rhythm
+## Not in this phase (planned / deferred)
 
-### 🔄 One-Tap "Export All"
-
-New! Export **all** your health data types with a single toggle. No more manually selecting each type:
-- All 87+ quantity types
-- All category types (sleep, symptoms, etc.)
-- Workouts with routes
-- ECG readings
-- Activity summaries (Apple Watch rings)
-
-### 📁 Export Formats
-
-| Format | Description |
-|--------|-------------|
-| **CSV** | Spreadsheet-compatible, great for data analysis |
-| **JSON** | Structured format with nested data, ideal for developers |
-| **GPX** | GPS Exchange Format for workout routes |
-
-### 🚀 Export Destinations
-
-- ✅ **Local Files** - Save to your device
-- ✅ **iCloud Drive** - Auto-sync across all Apple devices
-- ✅ **REST API** - Send to any custom endpoint
-- ⏳ **Google Drive** - Coming soon
-- ⏳ **Dropbox** - Coming soon
-- ⏳ **MQTT** - Coming soon
-- ⏳ **Home Assistant** - Coming soon
-
-### ⏰ Background Automations (NEW!)
-
-Set it and forget it:
-- ✅ Schedule automatic exports (hourly, daily, weekly, monthly)
-- ✅ Background execution - works even when app is closed
-- ✅ iCloud destination with custom folder paths
-- ✅ Local notifications on completion/failure
-- ✅ Execution history and retry logic
-- ✅ "Test Now" button to verify configuration
-
-### 🔒 Privacy First
-
-- **No account required** - Just install and use
-- **No data collection** - Your health data stays on your device
-- **No third-party sharing** - You control where data goes
-- **Open source** - Audit the code yourself
-- **Self-hostable** - Export to your own servers
+- Google Drive, Dropbox, MQTT, Home Assistant, Calendar (shown as non-selectable “Planned”)
+- macOS, visionOS, watchOS, Mac Catalyst app targets
+- Widget / App Group
+- Exact-time background guarantees
+- Writing data to HealthKit
+- Medical interpretation or clinical scoring
+- Streaming / bounded-memory export (v1 materializes the full snapshot and encoded document in memory)
 
 ---
 
-## Installation
+## Privacy-correct Health access
 
-### Requirements
+Apple does **not** tell apps whether Health **read** access was granted. OpenHealth shows:
 
-- iOS 17.0+ / iPadOS 17.0+ / macOS 14.0+ / visionOS 1.0+
-- Xcode 16.0+ (for development)
-- Apple Developer account (for device testing)
+- Health access not requested
+- Choose data access in Apple Health
+- Health access requested
+- Empty results: may mean no data **or** access not granted
 
-### From Source
+It never shows “Read access authorized/denied.”
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/shersingh7/OpenHealth.git
-   cd OpenHealth
-   ```
-
-2. **Open in Xcode**
-   ```bash
-   open OpenHealth.xcodeproj
-   ```
-
-3. **Configure Signing**
-   - Select the "OpenHealth" target in Xcode
-   - Under "Signing & Capabilities", select your development team
-   - Add the HealthKit capability
-   - Add Background Modes capability (check "Background fetch" and "Background processing")
-
-4. **Build & Run**
-   - Select your device or simulator
-   - Press `Cmd+R` to build and run
-
-### App Store
-
-Coming soon!
+Workout **routes contain precise location** and default **off**. “All supported” uses the full Core catalog (not a silent detection scan). Explicit selection never exports routes solely because a route toggle is on without workouts/routes in the selection.
 
 ---
 
-## Usage
+## Destinations
 
-### First Launch
-
-1. **Grant HealthKit Access**: OpenHealth will request access to your health data. Select the data types you want to export.
-
-2. **Dashboard**: View your health metrics at a glance - steps, heart rate, recent workouts, and available data types.
-
-3. **Export**: Tap the Export tab to create your first export.
-
-### Creating an Export
-
-**Quick Export (All Data):**
-1. Toggle **"Export All Health Data"**
-2. Select **Date Range** (e.g., "Yesterday", "Last 7 Days")
-3. Select **Format** (JSON recommended for complete data)
-4. Select **Destination** (iCloud Drive recommended)
-5. Tap **Export Now**
-
-**Custom Export:**
-1. Leave "Export All Health Data" disabled
-2. Tap **Data Types** to select specific metrics
-3. Configure date range, format, and destination
-4. Tap **Export Now**
-
-### Setting Up Automations
-
-1. Go to the **Automations** tab
-2. Tap **+** to create a new automation
-3. Configure:
-   - **Name**: e.g., "Daily Health Export"
-   - **Schedule**: Set frequency (daily recommended) and time
-   - **Export Settings**: Toggle "Export All Health Data" for complete exports
-   - **iCloud Destination**: Set folder path (e.g., `OpenHealth/DailyExports`)
-4. Tap **"Test Now"** to verify the configuration
-5. Toggle **"Enabled"** and tap **Save**
-
-The automation will now run automatically in the background according to your schedule!
+| Destination | Implemented | Notes |
+|-------------|-------------|--------|
+| Local Files | Yes | Documents / Files app |
+| iCloud Drive | Yes | Requires Apple Developer portal container **`iCloud.com.shersingh7.openhealth`**, matching entitlements, and an on-device iCloud Drive account |
+| REST API | Yes | HTTPS; bearer / API key via Keychain; credentialed redirects stay same-origin |
+| Google Drive / Dropbox / MQTT / HA / Calendar | No | Planned only; legacy entries migrate **disabled** with warnings |
 
 ---
 
-## Automations
+## Automations and background
 
-### How It Works
+Background exports use a single `BGAppRefreshTask` identifier (`com.shersingh7.openhealth.refresh`) for the earliest eligible job.
 
-OpenHealth uses iOS Background Tasks (`BGTaskScheduler`) to run exports automatically:
-
-1. **Scheduling**: When you create an automation, it's registered with the system
-2. **Background Execution**: iOS wakes the app at the scheduled time to run the export
-3. **Completion**: The app sends a local notification when the export completes
-4. **Rescheduling**: The next execution is automatically scheduled
-
-### Requirements
-
-- App must be opened at least once after installation (to register background tasks)
-- Background App Refresh must be enabled in Settings
-- For iCloud exports: iCloud Drive must be enabled
-
-### Troubleshooting
-
-**Automation not running?**
-- Ensure "Background App Refresh" is enabled in Settings > General > Background App Refresh
-- Open the app at least once every few days (iOS suspends background tasks for unused apps)
-- Check that HealthKit permissions are still granted
-
-**Export fails?**
-- Check iCloud storage space
-- Verify HealthKit permissions
-- Test the automation manually with "Test Now" button
-- Check last error message in automation details
+**Execution is best effort.** “Earliest after 2:00” is not a promise of exact fire time. Enable Background App Refresh for better odds; still never guaranteed. The live `AppContainer` attaches to background registration at composition time so a background-only launch can run without the UI appearing. On expiration, the active export task is cancelled and outcomes are recorded.
 
 ---
 
-## Architecture
+## Memory model (export)
 
+v1 **materializes** the HealthKit snapshot and the encoded export document **fully in memory**, then writes a temporary artifact for delivery. Do not assume streaming or bounded memory for large “All Time” exports.
+
+---
+
+## Requirements
+
+- **Xcode 15+** with iOS 17 SDK for app builds, simulator, and device runs (not available on Command Line Tools–only hosts)
+- Apple Developer team for device + HealthKit + iCloud capabilities
+- No third-party runtime dependencies
+
+Local signing: set your **Development Team** in Xcode locally. Shared project settings do **not** hard-code a team.
+
+---
+
+## Build & run (Xcode — required for the app)
+
+1. Open `OpenHealth.xcodeproj`
+2. Select the **OpenHealth** shared scheme
+3. Choose an iPhone/iPad simulator or device
+4. Set your Development Team under Signing & Capabilities
+5. Ensure HealthKit + iCloud container capabilities match `Resources/OpenHealth.entitlements`
+6. Run
+
+These steps have **not** been executed on Command Line Tools–only hosts. Treat them as an explicit external gate.
+
+---
+
+## Tests & local gates (Command Line Tools friendly)
+
+Core logic is Foundation-only and runs without full Xcode:
+
+```bash
+# Observed locally: 91 passed, 0 failed, 91 total
+swift package clean && Scripts/run_core_tests.sh
+
+# Compile the Core library
+swift build --build-system native
 ```
-OpenHealth/
-├── App/
-│   ├── OpenHealthApp.swift         # App entry with BGTaskScheduler registration
-│   └── ContentView.swift            # Main tab view
-├── Models/
-│   ├── Automation.swift             # Automation models with execution status
-│   ├── ExportConfiguration.swift      # Export settings including "Export All" flag
-│   ├── ExportDestination.swift       # iCloud, local, API destinations
-│   └── HealthData.swift             # Data models including HealthDataBundle
-├── Services/
-│   ├── AutomationScheduler.swift    # NEW: Background task scheduling and execution
-│   ├── HealthKitService.swift       # HealthKit fetching including fetchAllHealthData()
-│   └── ExportService.swift          # Export logic with format conversion
-├── ViewModels/
-│   └── DashboardViewModel.swift     # Dashboard data management
-├── Views/
-│   ├── Automation/                  # Automation list and detail views
-│   ├── Dashboard/                   # Health metrics dashboard
-│   ├── Export/                      # Export configuration views
-│   └── Settings/                    # App settings
-├── Utilities/
-│   └── HealthTypeMetadata.swift     # Health type categorization
-├── Widgets/
-│   └── HealthExportWidget.swift     # Home screen widget
-├── Tests/
-│   └── ExportServiceTests.swift     # Unit tests
-└── Resources/
-    └── Info.plist                   # Background task permissions
+
+The package uses an executable MiniXCTest-compatible harness because this development host may have Apple Command Line Tools without the XCTest framework. The shared Xcode scheme / CI simulator job remains the required app-level gate.
+
+### Static and subset checks
+
+```bash
+# Production Swift syntax (all App/Core/Infrastructure/DesignSystem/Features sources)
+# Prefer an array so paths are not word-split:
+bash -c 'files=(); while IFS= read -r f; do files+=("$f"); done < <(find App Core Infrastructure DesignSystem Features -name "*.swift" | sort); xcrun swiftc -parse -sdk "$(xcrun --sdk macosx --show-sdk-path)" -target arm64-apple-macos13 "${files[@]}"'
+
+# Core + HealthKit subset type-check against the local macOS SDK
+bash -c 'SDK=$(xcrun --sdk macosx --show-sdk-path); core=(); hk=(); log=(); while IFS= read -r f; do core+=("$f"); done < <(find Core -name "*.swift" | sort); while IFS= read -r f; do hk+=("$f"); done < <(find Infrastructure/HealthKit -name "*.swift" | sort); while IFS= read -r f; do log+=("$f"); done < <(find Infrastructure/Logging -name "*.swift" | sort); xcrun swiftc -typecheck -sdk "$SDK" -target arm64-apple-macos13 "${core[@]}" "${hk[@]}" "${log[@]}"'
+
+# Core + Export + Persistence subset type-check
+bash -c 'SDK=$(xcrun --sdk macosx --show-sdk-path); core=(); exp=(); pers=(); log=(); while IFS= read -r f; do core+=("$f"); done < <(find Core -name "*.swift" | sort); while IFS= read -r f; do exp+=("$f"); done < <(find Infrastructure/Export -name "*.swift" | sort); while IFS= read -r f; do pers+=("$f"); done < <(find Infrastructure/Persistence -name "*.swift" | sort); while IFS= read -r f; do log+=("$f"); done < <(find Infrastructure/Logging -name "*.swift" | sort); xcrun swiftc -typecheck -sdk "$SDK" -target arm64-apple-macos13 "${core[@]}" "${exp[@]}" "${pers[@]}" "${log[@]}"'
+
+python3 Scripts/validate_project_references.py
+python3 Scripts/check_secrets.py   # prints rule + path only; never secret values
+plutil -lint Resources/Info.plist Resources/OpenHealth.entitlements Resources/PrivacyInfo.xcprivacy OpenHealth.xcodeproj/project.pbxproj
+python3 -c 'import json,pathlib; [json.load(open(p)) for p in pathlib.Path("Resources/Assets.xcassets").rglob("Contents.json")]'
+git diff --check
+```
+
+### App icon
+
+Source: `Resources/AppIconSource.svg` (solid fills only; no SVG filters/strokes — ImageMagick-compatible).
+Checked-in asset: `Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png` (1024×1024, sRGB, opaque).
+
+```bash
+# Requires ImageMagick (`magick`). Regenerates PNG + previews and validates pixels/colors.
+Scripts/generate_app_icon.sh
+```
+
+Previews (not part of the asset catalog): `Resources/icon-previews/`.
+
+### Xcode-only gates (not runnable on CLT-only hosts)
+
+```bash
+xcodebuild -project OpenHealth.xcodeproj -scheme OpenHealth \
+  -destination 'generic/platform=iOS Simulator' \
+  CODE_SIGNING_ALLOWED=NO build
+```
+
+Plus device HealthKit smoke tests, background-task smoke tests, and archive validation listed in the implementation plan. **These remain explicitly unverified** when full Xcode is absent.
+
+---
+
+## Project layout
+
+```text
+App/               Composition root + @main + background registration
+Core/              Foundation-only domain (also SwiftPM OpenHealthCore)
+Infrastructure/    HealthKit, destinations, Keychain, automation, persistence
+DesignSystem/      Theme + components
+Features/          Onboarding, Home, Export, Automations, Settings
+Resources/         Info.plist, entitlements, privacy manifest, assets, icon source
+Tests/             OpenHealthCore MiniXCTest harness (91 tests)
+Scripts/           Test runner, project validation, secret scan, icon generation
+docs/              Architecture, privacy, export schema, plans
 ```
 
 ---
 
-## Development Status
+## Documentation
 
-### ✅ Implemented
-- [x] Manual export of all health data types
-- [x] "Export All" toggle for one-tap exports
-- [x] CSV, JSON, GPX export formats
-- [x] Local Files and iCloud Drive destinations
-- [x] REST API destination
-- [x] Background task scheduling (BGTaskScheduler)
-- [x] Daily/weekly/monthly automation
-- [x] Execution status tracking
-- [x] Local notifications
-- [x] "Test Now" button for automations
-
-### ⏳ In Progress / Planned
-- [ ] Apple Watch app
-- [ ] Siri Shortcuts integration
-- [ ] Google Drive integration
-- [ ] Dropbox integration
-- [ ] MQTT/Home Assistant support
-- [ ] Custom export templates
-- [ ] Data visualization charts
-- [ ] Multi-language support
-
----
-
-## Known Issues
-
-### Build & Setup
-- ⚠️ **Apple Developer Account Required**: HealthKit entitlement requires Apple Developer Program ($99/year) for device testing and App Store publishing
-- ⚠️ **Xcode Project**: Project is configured for manual signing with development team
-
-### Functional Limitations
-- ⚠️ **Workout Routes**: GPX export for routes is simplified and may not capture all route data
-- ⚠️ **ECG Export**: ECG data fetching works but visualization in exports is basic
-- ⚠️ **Large Exports**: Exporting "All Time" with all data types may be slow or memory-intensive
-
-### Background Automation
-- ⚠️ **iOS Restrictions**: Background tasks may be delayed by iOS based on battery, usage patterns
-- ⚠️ **First Run**: App must be opened at least once to register background tasks
+- [Architecture](docs/architecture.md)
+- [Privacy & security](docs/privacy-and-security.md)
+- [Export schema v1](docs/export-schema-v1.md)
+- [Implementation plan](docs/plans/2026-08-01-openhealth-architecture-ui-overhaul.md)
+- [Corrective pass checklist](docs/plans/2026-08-01-openhealth-corrective-pass.md)
 
 ---
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-### Development Setup
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-### Code Style
-
-- Follow Swift naming conventions
-- Use SwiftUI for all views
-- Add `@MainActor` for UI-related code
-- Write documentation comments for public APIs
-- Add tests for new functionality
-
-### Priority Areas
-
-1. **Testing**: Add comprehensive unit and UI tests
-2. **Error Handling**: Improve error messages and recovery
-3. **Performance**: Optimize large exports
-4. **Documentation**: Add inline code documentation
-
----
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## Acknowledgments
-
-- [Apple HealthKit](https://developer.apple.com/documentation/healthkit) - Health data framework
-- [Health Auto Export](https://www.healthyapps.dev/health-auto-export) - Inspiration for this project
-- [Apple Background Tasks Framework](https://developer.apple.com/documentation/backgroundtasks) - For automation support
-
----
-
-<div align="center">
-  <p>Made with ❤️ for the open source community</p>
-  <p>
-    <a href="https://github.com/shersingh7/OpenHealth/issues">Report Bug</a> •
-    <a href="https://github.com/shersingh7/OpenHealth/issues">Request Feature</a>
-  </p>
-</div>
+Keep Core free of UIKit/HealthKit. Prefer protocols and `AppContainer` injection. Do not commit secrets, signing teams, personal data, or generated `.build` artifacts. Do not claim production readiness without Xcode simulator/device verification.

@@ -7,59 +7,178 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA0001AA /* OpenHealthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0001AA /* OpenHealthApp.swift */; };
-		AA0002AA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0002AA /* ContentView.swift */; };
-		AA0003AA /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0003AA /* DashboardView.swift */; };
-		AA0004AA /* ExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0004AA /* ExportView.swift */; };
-		AA0005AA /* DataTypeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0005AA /* DataTypeSelectionView.swift */; };
-		AA0006AA /* DateRangePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0006AA /* DateRangePickerView.swift */; };
-		AA0007AA /* DestinationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0007AA /* DestinationPickerView.swift */; };
-		AA0008AA /* AutomationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0008AA /* AutomationListView.swift */; };
-		AA0009AA /* AutomationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0009AA /* AutomationDetailView.swift */; };
-		AA0010AA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0010AA /* SettingsView.swift */; };
-		AA0011AA /* Automation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0011AA /* Automation.swift */; };
-		AA0012AA /* ExportConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0012AA /* ExportConfiguration.swift */; };
-		AA0013AA /* ExportDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0013AA /* ExportDestination.swift */; };
-		AA0014AA /* HealthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0014AA /* HealthData.swift */; };
-		AA0015AA /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0015AA /* HealthKitService.swift */; };
-		AA0016AA /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0016AA /* ExportService.swift */; };
-		AA0017AA /* AutomationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0017AA /* AutomationScheduler.swift */; };
-		AA0018AA /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0018AA /* DashboardViewModel.swift */; };
-		AA0019AA /* HealthTypeMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0019AA /* HealthTypeMetadata.swift */; };
-		AA0020AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB0020AA /* Assets.xcassets */; };
-		AA0021AA /* OpenHealth.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = BB0023AA /* OpenHealth.entitlements */; };
+		A15A6AFAE /* AppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7319C37E /* AppContainer.swift */; };
+		AE0F13602 /* AppTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC018300A /* AppTab.swift */; };
+		AA0D4A2C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A531F8B98 /* ContentView.swift */; };
+		A630149B7 /* OpenHealthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69A56C2B /* OpenHealthApp.swift */; };
+		AD5A6FF59 /* CSVExportEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C2FDA48 /* CSVExportEncoder.swift */; };
+		A40EE4C76 /* ExportPipelineCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4013136C /* ExportPipelineCoordinator.swift */; };
+		A88A5A02F /* FilenameGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA75644 /* FilenameGenerator.swift */; };
+		AD91344E4 /* GPXExportEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADFBD7C7F /* GPXExportEncoder.swift */; };
+		A93708418 /* JSONExportEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8608DB8 /* JSONExportEncoder.swift */; };
+		A339356F1 /* XMLCSVSanitizers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4A4F6E2 /* XMLCSVSanitizers.swift */; };
+		AE40A2464 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A833843EB /* AppSettings.swift */; };
+		A17C95AE8 /* AutomationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEC20291 /* AutomationModels.swift */; };
+		A97A1BD9B /* DestinationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06FDF7E9 /* DestinationModels.swift */; };
+		AE3AF9085 /* ExportHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97C09BE2 /* ExportHistory.swift */; };
+		A236CA8BD /* ExportModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E6001B /* ExportModels.swift */; };
+		ADD91A2A5 /* HealthMetric.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0743543 /* HealthMetric.swift */; };
+		A66ACD457 /* HealthRecords.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30CEFE0E /* HealthRecords.swift */; };
+		A165175BD /* AutomationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1859FF4C /* AutomationRepository.swift */; };
+		AD970E175 /* BackgroundTaskScheduling.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93E4A585 /* BackgroundTaskScheduling.swift */; };
+		A0048734E /* ExportDestinationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3AB0BE6C /* ExportDestinationClient.swift */; };
+		A81F87039 /* ExportHistoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE68071E /* ExportHistoryRepository.swift */; };
+		A44BCE2CD /* HealthDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A347FEB97 /* HealthDataSource.swift */; };
+		A7BB5240B /* SecretStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBC16140 /* SecretStore.swift */; };
+		A810333FC /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA5B5EFD /* SettingsStore.swift */; };
+		A8E31E755 /* ScheduleCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95D38905 /* ScheduleCalculator.swift */; };
+		AB2ECA796 /* Clock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A0CBAFC /* Clock.swift */; };
+		A664D38A6 /* DateRangeResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6F3B3F3 /* DateRangeResolver.swift */; };
+		A8D6E94CB /* PathValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646CD727 /* PathValidator.swift */; };
+		AF72EF4EE /* URLValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACED55DA3 /* URLValidator.swift */; };
+		A0AB916A3 /* AutomationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A2F0041 /* AutomationCoordinator.swift */; };
+		AB67DFA01 /* BGTaskSchedulerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D15C602 /* BGTaskSchedulerClient.swift */; };
+		A7FDE3A80 /* NotificationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD729E04D /* NotificationClient.swift */; };
+		A86EA81EB /* ExportPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D37DC5E /* ExportPipeline.swift */; };
+		A3F58C3EB /* ICloudDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDCFA971 /* ICloudDestination.swift */; };
+		A30BDA6ED /* LocalFileDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A7605C8 /* LocalFileDestination.swift */; };
+		A3B2DFDE5 /* RESTDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE41FC05A /* RESTDestination.swift */; };
+		AD5F8773F /* RedirectPolicyDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1058603 /* RedirectPolicyDelegate.swift */; };
+		ABDD6AEA9 /* HealthKitRecordMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CB08ED5 /* HealthKitRecordMapper.swift */; };
+		A3762CC97 /* HealthMetricCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F8C1D04 /* HealthMetricCatalog.swift */; };
+		AB6646E11 /* LiveHealthDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB36DE427 /* LiveHealthDataSource.swift */; };
+		AB58ABFF7 /* WorkoutRouteReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFED1B26D /* WorkoutRouteReader.swift */; };
+		A04F967FF /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D7522D9 /* AppLogger.swift */; };
+		AF30FFD4D /* JSONAutomationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A4B3372 /* JSONAutomationRepository.swift */; };
+		AF975EC9F /* JSONExportHistoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90A00F2F /* JSONExportHistoryRepository.swift */; };
+		A2901EAF3 /* KeychainSecretStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8930386A /* KeychainSecretStore.swift */; };
+		AACB4061A /* LegacyAutomationMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78C776C3 /* LegacyAutomationMigrator.swift */; };
+		AA0BA4099 /* UserDefaultsSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92CB4D45 /* UserDefaultsSettingsStore.swift */; };
+		A3057EB4A /* OHCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7895A7C /* OHCard.swift */; };
+		A722032F2 /* OHPrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D6C9CAA /* OHPrimaryButton.swift */; };
+		A3C005689 /* OHProgressPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F6C333 /* OHProgressPanel.swift */; };
+		A16714B9D /* OHStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A875D1BA9 /* OHStateView.swift */; };
+		A6835634D /* OHStatusBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44F0008C /* OHStatusBadge.swift */; };
+		A31C88CF4 /* OpenHealthTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F0E6113 /* OpenHealthTheme.swift */; };
+		AB1D1ADE4 /* AutomationEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55636396 /* AutomationEditorView.swift */; };
+		A46AC6C0A /* AutomationEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A758C88 /* AutomationEditorViewModel.swift */; };
+		AAEF1212D /* AutomationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAFAB8D5 /* AutomationListView.swift */; };
+		A72FDCF5B /* AutomationListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54EEF631 /* AutomationListViewModel.swift */; };
+		A31F37B51 /* DataTypeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA1E855D /* DataTypeSelectionView.swift */; };
+		AD9533450 /* DateRangePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91D694EF /* DateRangePickerView.swift */; };
+		A3821D020 /* DestinationEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE2FA6FC /* DestinationEditorView.swift */; };
+		A796051CE /* DestinationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6A0E158 /* DestinationPickerView.swift */; };
+		AC3EA3E11 /* ExportBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96071106 /* ExportBuilderView.swift */; };
+		A41024D82 /* ExportResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34483CD9 /* ExportResultView.swift */; };
+		AA14494C0 /* ExportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A049DF383 /* ExportViewModel.swift */; };
+		A0A174502 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF18A547F /* HomeView.swift */; };
+		AFDC9F62A /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF7851C8 /* HomeViewModel.swift */; };
+		AF964E02D /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83935193 /* OnboardingView.swift */; };
+		A51515EA4 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B5168C /* OnboardingViewModel.swift */; };
+		A5E4E89F4 /* DataCoverageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B166A8A /* DataCoverageView.swift */; };
+		AC079D028 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB06EB215 /* SettingsView.swift */; };
+		A6FE6440B /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23FA7DF /* SettingsViewModel.swift */; };
+		A5DDBF56A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAC13B5EC /* Assets.xcassets */; };
+		A5F1E99A5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A11E0FEBE /* PrivacyInfo.xcprivacy */; };
+		B01METRIC1 /* MetricSelectionResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01METRIC1 /* MetricSelectionResolver.swift */; };
+		B02HYDRATE1 /* ScheduleHydration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02HYDRATE1 /* ScheduleHydration.swift */; };
+		B03PROTECT1 /* ProtectedFileIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03PROTECT1 /* ProtectedFileIO.swift */; };
+		B04REDIRECT1 /* RedirectOriginPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04REDIRECT1 /* RedirectOriginPolicy.swift */; };
+		B05SENSHEAD1 /* SensitiveHeaderDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05SENSHEAD1 /* SensitiveHeaderDetector.swift */; };
+		B06INMEMORY1 /* InMemoryRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06INMEMORY1 /* InMemoryRepositories.swift */; };
+		B07STAGED1 /* StagedSecretStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07STAGED1 /* StagedSecretStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		BB0001AA /* OpenHealthApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenHealthApp.swift; sourceTree = "<group>"; };
-		BB0002AA /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		BB0003AA /* DashboardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
-		BB0004AA /* ExportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportView.swift; sourceTree = "<group>"; };
-		BB0005AA /* DataTypeSelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataTypeSelectionView.swift; sourceTree = "<group>"; };
-		BB0006AA /* DateRangePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateRangePickerView.swift; sourceTree = "<group>"; };
-		BB0007AA /* DestinationPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DestinationPickerView.swift; sourceTree = "<group>"; };
-		BB0008AA /* AutomationListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutomationListView.swift; sourceTree = "<group>"; };
-		BB0009AA /* AutomationDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutomationDetailView.swift; sourceTree = "<group>"; };
-		BB0010AA /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		BB0011AA /* Automation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Automation.swift; sourceTree = "<group>"; };
-		BB0012AA /* ExportConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportConfiguration.swift; sourceTree = "<group>"; };
-		BB0013AA /* ExportDestination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportDestination.swift; sourceTree = "<group>"; };
-		BB0014AA /* HealthData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthData.swift; sourceTree = "<group>"; };
-		BB0015AA /* HealthKitService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
-		BB0016AA /* ExportService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportService.swift; sourceTree = "<group>"; };
-		BB0017AA /* AutomationScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutomationScheduler.swift; sourceTree = "<group>"; };
-		BB0018AA /* DashboardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
-		BB0019AA /* HealthTypeMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthTypeMetadata.swift; sourceTree = "<group>"; };
-		BB0020AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		BB0021AA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BB0022AA /* OpenHealth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenHealth.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		BB0023AA /* OpenHealth.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = OpenHealth.entitlements; sourceTree = "<group>"; };
+		A7319C37E /* AppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainer.swift; sourceTree = "<group>"; };
+		AC018300A /* AppTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTab.swift; sourceTree = "<group>"; };
+		A531F8B98 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A69A56C2B /* OpenHealthApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenHealthApp.swift; sourceTree = "<group>"; };
+		A7C2FDA48 /* CSVExportEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVExportEncoder.swift; sourceTree = "<group>"; };
+		A4013136C /* ExportPipelineCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportPipelineCoordinator.swift; sourceTree = "<group>"; };
+		A9CA75644 /* FilenameGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilenameGenerator.swift; sourceTree = "<group>"; };
+		ADFBD7C7F /* GPXExportEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPXExportEncoder.swift; sourceTree = "<group>"; };
+		AD8608DB8 /* JSONExportEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONExportEncoder.swift; sourceTree = "<group>"; };
+		AE4A4F6E2 /* XMLCSVSanitizers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLCSVSanitizers.swift; sourceTree = "<group>"; };
+		A833843EB /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		ADEC20291 /* AutomationModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomationModels.swift; sourceTree = "<group>"; };
+		A06FDF7E9 /* DestinationModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationModels.swift; sourceTree = "<group>"; };
+		A97C09BE2 /* ExportHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportHistory.swift; sourceTree = "<group>"; };
+		A33E6001B /* ExportModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportModels.swift; sourceTree = "<group>"; };
+		AA0743543 /* HealthMetric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthMetric.swift; sourceTree = "<group>"; };
+		A30CEFE0E /* HealthRecords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthRecords.swift; sourceTree = "<group>"; };
+		A1859FF4C /* AutomationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomationRepository.swift; sourceTree = "<group>"; };
+		A93E4A585 /* BackgroundTaskScheduling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskScheduling.swift; sourceTree = "<group>"; };
+		A3AB0BE6C /* ExportDestinationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportDestinationClient.swift; sourceTree = "<group>"; };
+		ACE68071E /* ExportHistoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportHistoryRepository.swift; sourceTree = "<group>"; };
+		A347FEB97 /* HealthDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDataSource.swift; sourceTree = "<group>"; };
+		ADBC16140 /* SecretStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretStore.swift; sourceTree = "<group>"; };
+		ACA5B5EFD /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		A95D38905 /* ScheduleCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCalculator.swift; sourceTree = "<group>"; };
+		A1A0CBAFC /* Clock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clock.swift; sourceTree = "<group>"; };
+		AF6F3B3F3 /* DateRangeResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRangeResolver.swift; sourceTree = "<group>"; };
+		A646CD727 /* PathValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathValidator.swift; sourceTree = "<group>"; };
+		ACED55DA3 /* URLValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLValidator.swift; sourceTree = "<group>"; };
+		A7A2F0041 /* AutomationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomationCoordinator.swift; sourceTree = "<group>"; };
+		A3D15C602 /* BGTaskSchedulerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BGTaskSchedulerClient.swift; sourceTree = "<group>"; };
+		AD729E04D /* NotificationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationClient.swift; sourceTree = "<group>"; };
+		A1D37DC5E /* ExportPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportPipeline.swift; sourceTree = "<group>"; };
+		AFDCFA971 /* ICloudDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICloudDestination.swift; sourceTree = "<group>"; };
+		A9A7605C8 /* LocalFileDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileDestination.swift; sourceTree = "<group>"; };
+		AE41FC05A /* RESTDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RESTDestination.swift; sourceTree = "<group>"; };
+		AE1058603 /* RedirectPolicyDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectPolicyDelegate.swift; sourceTree = "<group>"; };
+		A6CB08ED5 /* HealthKitRecordMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitRecordMapper.swift; sourceTree = "<group>"; };
+		A0F8C1D04 /* HealthMetricCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthMetricCatalog.swift; sourceTree = "<group>"; };
+		AB36DE427 /* LiveHealthDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveHealthDataSource.swift; sourceTree = "<group>"; };
+		AFED1B26D /* WorkoutRouteReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutRouteReader.swift; sourceTree = "<group>"; };
+		A2D7522D9 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
+		A0A4B3372 /* JSONAutomationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONAutomationRepository.swift; sourceTree = "<group>"; };
+		A90A00F2F /* JSONExportHistoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONExportHistoryRepository.swift; sourceTree = "<group>"; };
+		A8930386A /* KeychainSecretStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainSecretStore.swift; sourceTree = "<group>"; };
+		A78C776C3 /* LegacyAutomationMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyAutomationMigrator.swift; sourceTree = "<group>"; };
+		A92CB4D45 /* UserDefaultsSettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsSettingsStore.swift; sourceTree = "<group>"; };
+		AD7895A7C /* OHCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OHCard.swift; sourceTree = "<group>"; };
+		A9D6C9CAA /* OHPrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OHPrimaryButton.swift; sourceTree = "<group>"; };
+		A78F6C333 /* OHProgressPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OHProgressPanel.swift; sourceTree = "<group>"; };
+		A875D1BA9 /* OHStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OHStateView.swift; sourceTree = "<group>"; };
+		A44F0008C /* OHStatusBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OHStatusBadge.swift; sourceTree = "<group>"; };
+		A0F0E6113 /* OpenHealthTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenHealthTheme.swift; sourceTree = "<group>"; };
+		A55636396 /* AutomationEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomationEditorView.swift; sourceTree = "<group>"; };
+		A7A758C88 /* AutomationEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomationEditorViewModel.swift; sourceTree = "<group>"; };
+		AAAFAB8D5 /* AutomationListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomationListView.swift; sourceTree = "<group>"; };
+		A54EEF631 /* AutomationListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomationListViewModel.swift; sourceTree = "<group>"; };
+		ABA1E855D /* DataTypeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypeSelectionView.swift; sourceTree = "<group>"; };
+		A91D694EF /* DateRangePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRangePickerView.swift; sourceTree = "<group>"; };
+		AEE2FA6FC /* DestinationEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationEditorView.swift; sourceTree = "<group>"; };
+		AE6A0E158 /* DestinationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationPickerView.swift; sourceTree = "<group>"; };
+		A96071106 /* ExportBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportBuilderView.swift; sourceTree = "<group>"; };
+		A34483CD9 /* ExportResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportResultView.swift; sourceTree = "<group>"; };
+		A049DF383 /* ExportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportViewModel.swift; sourceTree = "<group>"; };
+		AF18A547F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		ADF7851C8 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		A83935193 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		AD1B5168C /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		A5B166A8A /* DataCoverageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCoverageView.swift; sourceTree = "<group>"; };
+		AB06EB215 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		AF23FA7DF /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		AAC13B5EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A11E0FEBE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		BBINFO01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BBENTL01 /* OpenHealth.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenHealth.entitlements; sourceTree = "<group>"; };
+		F01METRIC1 /* MetricSelectionResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricSelectionResolver.swift; sourceTree = "<group>"; };
+		F02HYDRATE1 /* ScheduleHydration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleHydration.swift; sourceTree = "<group>"; };
+		F03PROTECT1 /* ProtectedFileIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectedFileIO.swift; sourceTree = "<group>"; };
+		F04REDIRECT1 /* RedirectOriginPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectOriginPolicy.swift; sourceTree = "<group>"; };
+		F05SENSHEAD1 /* SensitiveHeaderDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensitiveHeaderDetector.swift; sourceTree = "<group>"; };
+		F06INMEMORY1 /* InMemoryRepositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryRepositories.swift; sourceTree = "<group>"; };
+		F07STAGED1 /* StagedSecretStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StagedSecretStore.swift; sourceTree = "<group>"; };
+		BBAPP0001 /* OpenHealth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenHealth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		CC0001AA /* Frameworks */ = {
+		CCFW0001 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 0;
+			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -67,141 +186,281 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		DD0001AA = {
+		ROOT0001 = {
 			isa = PBXGroup;
 			children = (
-				DD0002AA /* App */,
-				DD0003AA /* Models */,
-				DD0004AA /* Services */,
-				DD0005AA /* Views */,
-				DD0006AA /* ViewModels */,
-				DD0007AA /* Utilities */,
-				DD0008AA /* Resources */,
-				DD0009AA /* Products */,
+				GAC863F34 /* App */,
+				G83168E6C /* Core */,
+				GCBA4F4CE /* Infrastructure */,
+				G6E79C9C8 /* DesignSystem */,
+				G98F770B0 /* Features */,
+				GDDCF50C2 /* Resources */,
+				PROD0001 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		DD0002AA /* App */ = {
+		PROD0001 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BB0001AA /* OpenHealthApp.swift */,
-				BB0002AA /* ContentView.swift */,
-			);
-			path = App;
-			sourceTree = "<group>";
-		};
-		DD0003AA /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				BB0011AA /* Automation.swift */,
-				BB0012AA /* ExportConfiguration.swift */,
-				BB0013AA /* ExportDestination.swift */,
-				BB0014AA /* HealthData.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		DD0004AA /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				BB0015AA /* HealthKitService.swift */,
-				BB0016AA /* ExportService.swift */,
-				BB0017AA /* AutomationScheduler.swift */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		DD0005AA /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				DD0010AA /* Dashboard */,
-				DD0011AA /* Export */,
-				DD0012AA /* Automation */,
-				DD0013AA /* Settings */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		DD0006AA /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				BB0018AA /* DashboardViewModel.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		DD0007AA /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-				BB0019AA /* HealthTypeMetadata.swift */,
-			);
-			path = Utilities;
-			sourceTree = "<group>";
-		};
-		DD0008AA /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				BB0020AA /* Assets.xcassets */,
-				BB0021AA /* Info.plist */,
-				BB0023AA /* OpenHealth.entitlements */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		DD0009AA /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BB0022AA /* OpenHealth.app */,
+				BBAPP0001 /* OpenHealth.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DD0010AA /* Dashboard */ = {
+		GAC863F34 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				BB0003AA /* DashboardView.swift */,
+				A7319C37E /* AppContainer.swift */,
+				AC018300A /* AppTab.swift */,
+				A531F8B98 /* ContentView.swift */,
+				A69A56C2B /* OpenHealthApp.swift */,
 			);
-			path = Dashboard;
+			path = App;
 			sourceTree = "<group>";
 		};
-		DD0011AA /* Export */ = {
+		G83168E6C /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				BB0004AA /* ExportView.swift */,
-				BB0005AA /* DataTypeSelectionView.swift */,
-				BB0006AA /* DateRangePickerView.swift */,
-				BB0007AA /* DestinationPickerView.swift */,
+				GE151EF6C /* Export */,
+				G02C6B47B /* Models */,
+				G9008ED98 /* Protocols */,
+				G53E7A203 /* Scheduling */,
+				G552C6BAF /* Utilities */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		GE151EF6C /* Export */ = {
+			isa = PBXGroup;
+			children = (
+				A7C2FDA48 /* CSVExportEncoder.swift */,
+				A4013136C /* ExportPipelineCoordinator.swift */,
+				A9CA75644 /* FilenameGenerator.swift */,
+				ADFBD7C7F /* GPXExportEncoder.swift */,
+				AD8608DB8 /* JSONExportEncoder.swift */,
+				F01METRIC1 /* MetricSelectionResolver.swift */,
+				AE4A4F6E2 /* XMLCSVSanitizers.swift */,
 			);
 			path = Export;
 			sourceTree = "<group>";
 		};
-		DD0012AA /* Automation */ = {
+		G02C6B47B /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				BB0008AA /* AutomationListView.swift */,
-				BB0009AA /* AutomationDetailView.swift */,
+				A833843EB /* AppSettings.swift */,
+				ADEC20291 /* AutomationModels.swift */,
+				A06FDF7E9 /* DestinationModels.swift */,
+				A97C09BE2 /* ExportHistory.swift */,
+				A33E6001B /* ExportModels.swift */,
+				AA0743543 /* HealthMetric.swift */,
+				A30CEFE0E /* HealthRecords.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		G9008ED98 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				A1859FF4C /* AutomationRepository.swift */,
+				A93E4A585 /* BackgroundTaskScheduling.swift */,
+				A3AB0BE6C /* ExportDestinationClient.swift */,
+				ACE68071E /* ExportHistoryRepository.swift */,
+				A347FEB97 /* HealthDataSource.swift */,
+				ADBC16140 /* SecretStore.swift */,
+				ACA5B5EFD /* SettingsStore.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		G53E7A203 /* Scheduling */ = {
+			isa = PBXGroup;
+			children = (
+				A95D38905 /* ScheduleCalculator.swift */,
+				F02HYDRATE1 /* ScheduleHydration.swift */,
+			);
+			path = Scheduling;
+			sourceTree = "<group>";
+		};
+		G552C6BAF /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				A1A0CBAFC /* Clock.swift */,
+				AF6F3B3F3 /* DateRangeResolver.swift */,
+				A646CD727 /* PathValidator.swift */,
+				F03PROTECT1 /* ProtectedFileIO.swift */,
+				F04REDIRECT1 /* RedirectOriginPolicy.swift */,
+				F05SENSHEAD1 /* SensitiveHeaderDetector.swift */,
+				F07STAGED1 /* StagedSecretStore.swift */,
+				ACED55DA3 /* URLValidator.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		G6E79C9C8 /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				AD7895A7C /* OHCard.swift */,
+				A9D6C9CAA /* OHPrimaryButton.swift */,
+				A78F6C333 /* OHProgressPanel.swift */,
+				A875D1BA9 /* OHStateView.swift */,
+				A44F0008C /* OHStatusBadge.swift */,
+				A0F0E6113 /* OpenHealthTheme.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		G98F770B0 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				G3980924A /* Automations */,
+				G80EB57D0 /* Export */,
+				G2666A25A /* Home */,
+				G68A607F6 /* Onboarding */,
+				G7D4E82BC /* Settings */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		G3980924A /* Automations */ = {
+			isa = PBXGroup;
+			children = (
+				A55636396 /* AutomationEditorView.swift */,
+				A7A758C88 /* AutomationEditorViewModel.swift */,
+				AAAFAB8D5 /* AutomationListView.swift */,
+				A54EEF631 /* AutomationListViewModel.swift */,
+			);
+			path = Automations;
+			sourceTree = "<group>";
+		};
+		G80EB57D0 /* Export */ = {
+			isa = PBXGroup;
+			children = (
+				ABA1E855D /* DataTypeSelectionView.swift */,
+				A91D694EF /* DateRangePickerView.swift */,
+				AEE2FA6FC /* DestinationEditorView.swift */,
+				AE6A0E158 /* DestinationPickerView.swift */,
+				A96071106 /* ExportBuilderView.swift */,
+				A34483CD9 /* ExportResultView.swift */,
+				A049DF383 /* ExportViewModel.swift */,
+			);
+			path = Export;
+			sourceTree = "<group>";
+		};
+		G2666A25A /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				AF18A547F /* HomeView.swift */,
+				ADF7851C8 /* HomeViewModel.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		G68A607F6 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				A83935193 /* OnboardingView.swift */,
+				AD1B5168C /* OnboardingViewModel.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		G7D4E82BC /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A5B166A8A /* DataCoverageView.swift */,
+				AB06EB215 /* SettingsView.swift */,
+				AF23FA7DF /* SettingsViewModel.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		GCBA4F4CE /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				G313391B7 /* Automation */,
+				G52C2CEFC /* Export */,
+				GBDFB2638 /* HealthKit */,
+				GE4788A66 /* Logging */,
+				G9941BC83 /* Persistence */,
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		G313391B7 /* Automation */ = {
+			isa = PBXGroup;
+			children = (
+				A7A2F0041 /* AutomationCoordinator.swift */,
+				A3D15C602 /* BGTaskSchedulerClient.swift */,
+				AD729E04D /* NotificationClient.swift */,
 			);
 			path = Automation;
 			sourceTree = "<group>";
 		};
-		DD0013AA /* Settings */ = {
+		G52C2CEFC /* Export */ = {
 			isa = PBXGroup;
 			children = (
-				BB0010AA /* SettingsView.swift */,
+				A1D37DC5E /* ExportPipeline.swift */,
+				AFDCFA971 /* ICloudDestination.swift */,
+				A9A7605C8 /* LocalFileDestination.swift */,
+				AE41FC05A /* RESTDestination.swift */,
+				AE1058603 /* RedirectPolicyDelegate.swift */,
 			);
-			path = Settings;
+			path = Export;
+			sourceTree = "<group>";
+		};
+		GBDFB2638 /* HealthKit */ = {
+			isa = PBXGroup;
+			children = (
+				A6CB08ED5 /* HealthKitRecordMapper.swift */,
+				A0F8C1D04 /* HealthMetricCatalog.swift */,
+				AB36DE427 /* LiveHealthDataSource.swift */,
+				AFED1B26D /* WorkoutRouteReader.swift */,
+			);
+			path = HealthKit;
+			sourceTree = "<group>";
+		};
+		GE4788A66 /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				A2D7522D9 /* AppLogger.swift */,
+			);
+			path = Logging;
+			sourceTree = "<group>";
+		};
+		G9941BC83 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				F06INMEMORY1 /* InMemoryRepositories.swift */,
+				A0A4B3372 /* JSONAutomationRepository.swift */,
+				A90A00F2F /* JSONExportHistoryRepository.swift */,
+				A8930386A /* KeychainSecretStore.swift */,
+				A78C776C3 /* LegacyAutomationMigrator.swift */,
+				A92CB4D45 /* UserDefaultsSettingsStore.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		GDDCF50C2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AAC13B5EC /* Assets.xcassets */,
+				BBINFO01 /* Info.plist */,
+				BBENTL01 /* OpenHealth.entitlements */,
+				A11E0FEBE /* PrivacyInfo.xcprivacy */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		EE0001AA /* OpenHealth */ = {
+		TGT00001 /* OpenHealth */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FF0001AA /* Build configuration list for PBXNativeTarget "OpenHealth" */;
+			buildConfigurationList = CFGLIST1 /* Build configuration list for PBXNativeTarget "OpenHealth" */;
 			buildPhases = (
-				FF0002AA /* Sources */,
-				CC0001AA /* Frameworks */,
-				FF0003AA /* Resources */,
+				SRC00001 /* Sources */,
+				CCFW0001 /* Frameworks */,
+				RES00001 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -209,25 +468,25 @@
 			);
 			name = OpenHealth;
 			productName = OpenHealth;
-			productReference = BB0022AA /* OpenHealth.app */;
+			productReference = BBAPP0001 /* OpenHealth.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		GG0001AA /* Project object */ = {
+		PROJ0001 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInDag = 1;
+				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
-					EE0001AA = {
+					TGT00001 = {
 						CreatedOnToolsVersion = 15.0;
 					};
 				};
 			};
-			buildConfigurationList = FF0004AA /* Build configuration list for PBXProject "OpenHealth" */;
+			buildConfigurationList = CFGLIST0 /* Build configuration list for PBXProject "OpenHealth" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -235,86 +494,133 @@
 				en,
 				Base,
 			);
-			mainGroup = DD0001AA;
-			productRefGroup = DD0009AA /* Products */;
+			mainGroup = ROOT0001;
+			productRefGroup = PROD0001 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				EE0001AA /* OpenHealth */,
+				TGT00001 /* OpenHealth */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		FF0003AA /* Resources */ = {
+		RES00001 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA0020AA /* Assets.xcassets in Resources */,
-				AA0021AA /* OpenHealth.entitlements in Resources */,
+				A5DDBF56A /* Assets.xcassets in Resources */,
+				A5F1E99A5 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		FF0002AA /* Sources */ = {
+		SRC00001 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA0001AA /* OpenHealthApp.swift in Sources */,
-				AA0002AA /* ContentView.swift in Sources */,
-				AA0003AA /* DashboardView.swift in Sources */,
-				AA0004AA /* ExportView.swift in Sources */,
-				AA0005AA /* DataTypeSelectionView.swift in Sources */,
-				AA0006AA /* DateRangePickerView.swift in Sources */,
-				AA0007AA /* DestinationPickerView.swift in Sources */,
-				AA0008AA /* AutomationListView.swift in Sources */,
-				AA0009AA /* AutomationDetailView.swift in Sources */,
-				AA0010AA /* SettingsView.swift in Sources */,
-				AA0011AA /* Automation.swift in Sources */,
-				AA0012AA /* ExportConfiguration.swift in Sources */,
-				AA0013AA /* ExportDestination.swift in Sources */,
-				AA0014AA /* HealthData.swift in Sources */,
-				AA0015AA /* HealthKitService.swift in Sources */,
-				AA0016AA /* ExportService.swift in Sources */,
-				AA0017AA /* AutomationScheduler.swift in Sources */,
-				AA0018AA /* DashboardViewModel.swift in Sources */,
-				AA0019AA /* HealthTypeMetadata.swift in Sources */,
+				A15A6AFAE /* AppContainer.swift in Sources */,
+				AE0F13602 /* AppTab.swift in Sources */,
+				AA0D4A2C8 /* ContentView.swift in Sources */,
+				A630149B7 /* OpenHealthApp.swift in Sources */,
+				AD5A6FF59 /* CSVExportEncoder.swift in Sources */,
+				A40EE4C76 /* ExportPipelineCoordinator.swift in Sources */,
+				A88A5A02F /* FilenameGenerator.swift in Sources */,
+				AD91344E4 /* GPXExportEncoder.swift in Sources */,
+				A93708418 /* JSONExportEncoder.swift in Sources */,
+				A339356F1 /* XMLCSVSanitizers.swift in Sources */,
+				AE40A2464 /* AppSettings.swift in Sources */,
+				A17C95AE8 /* AutomationModels.swift in Sources */,
+				A97A1BD9B /* DestinationModels.swift in Sources */,
+				AE3AF9085 /* ExportHistory.swift in Sources */,
+				A236CA8BD /* ExportModels.swift in Sources */,
+				ADD91A2A5 /* HealthMetric.swift in Sources */,
+				A66ACD457 /* HealthRecords.swift in Sources */,
+				A165175BD /* AutomationRepository.swift in Sources */,
+				AD970E175 /* BackgroundTaskScheduling.swift in Sources */,
+				A0048734E /* ExportDestinationClient.swift in Sources */,
+				A81F87039 /* ExportHistoryRepository.swift in Sources */,
+				A44BCE2CD /* HealthDataSource.swift in Sources */,
+				A7BB5240B /* SecretStore.swift in Sources */,
+				A810333FC /* SettingsStore.swift in Sources */,
+				A8E31E755 /* ScheduleCalculator.swift in Sources */,
+				B02HYDRATE1 /* ScheduleHydration.swift in Sources */,
+				AB2ECA796 /* Clock.swift in Sources */,
+				A664D38A6 /* DateRangeResolver.swift in Sources */,
+				A8D6E94CB /* PathValidator.swift in Sources */,
+				B03PROTECT1 /* ProtectedFileIO.swift in Sources */,
+				B04REDIRECT1 /* RedirectOriginPolicy.swift in Sources */,
+				B05SENSHEAD1 /* SensitiveHeaderDetector.swift in Sources */,
+				B07STAGED1 /* StagedSecretStore.swift in Sources */,
+				AF72EF4EE /* URLValidator.swift in Sources */,
+				B01METRIC1 /* MetricSelectionResolver.swift in Sources */,
+				A0AB916A3 /* AutomationCoordinator.swift in Sources */,
+				AB67DFA01 /* BGTaskSchedulerClient.swift in Sources */,
+				A7FDE3A80 /* NotificationClient.swift in Sources */,
+				A86EA81EB /* ExportPipeline.swift in Sources */,
+				A3F58C3EB /* ICloudDestination.swift in Sources */,
+				A30BDA6ED /* LocalFileDestination.swift in Sources */,
+				A3B2DFDE5 /* RESTDestination.swift in Sources */,
+				AD5F8773F /* RedirectPolicyDelegate.swift in Sources */,
+				ABDD6AEA9 /* HealthKitRecordMapper.swift in Sources */,
+				A3762CC97 /* HealthMetricCatalog.swift in Sources */,
+				AB6646E11 /* LiveHealthDataSource.swift in Sources */,
+				AB58ABFF7 /* WorkoutRouteReader.swift in Sources */,
+				A04F967FF /* AppLogger.swift in Sources */,
+				B06INMEMORY1 /* InMemoryRepositories.swift in Sources */,
+				AF30FFD4D /* JSONAutomationRepository.swift in Sources */,
+				AF975EC9F /* JSONExportHistoryRepository.swift in Sources */,
+				A2901EAF3 /* KeychainSecretStore.swift in Sources */,
+				AACB4061A /* LegacyAutomationMigrator.swift in Sources */,
+				AA0BA4099 /* UserDefaultsSettingsStore.swift in Sources */,
+				A3057EB4A /* OHCard.swift in Sources */,
+				A722032F2 /* OHPrimaryButton.swift in Sources */,
+				A3C005689 /* OHProgressPanel.swift in Sources */,
+				A16714B9D /* OHStateView.swift in Sources */,
+				A6835634D /* OHStatusBadge.swift in Sources */,
+				A31C88CF4 /* OpenHealthTheme.swift in Sources */,
+				AB1D1ADE4 /* AutomationEditorView.swift in Sources */,
+				A46AC6C0A /* AutomationEditorViewModel.swift in Sources */,
+				AAEF1212D /* AutomationListView.swift in Sources */,
+				A72FDCF5B /* AutomationListViewModel.swift in Sources */,
+				A31F37B51 /* DataTypeSelectionView.swift in Sources */,
+				AD9533450 /* DateRangePickerView.swift in Sources */,
+				A3821D020 /* DestinationEditorView.swift in Sources */,
+				A796051CE /* DestinationPickerView.swift in Sources */,
+				AC3EA3E11 /* ExportBuilderView.swift in Sources */,
+				A41024D82 /* ExportResultView.swift in Sources */,
+				AA14494C0 /* ExportViewModel.swift in Sources */,
+				A0A174502 /* HomeView.swift in Sources */,
+				AFDC9F62A /* HomeViewModel.swift in Sources */,
+				AF964E02D /* OnboardingView.swift in Sources */,
+				A51515EA4 /* OnboardingViewModel.swift in Sources */,
+				A5E4E89F4 /* DataCoverageView.swift in Sources */,
+				AC079D028 /* SettingsView.swift in Sources */,
+				A6FE6440B /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		HH0001AA /* Debug */ = {
+		DBGPROJ1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				COPY_PHASE_STRIP = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -322,34 +628,22 @@
 			};
 			name = Debug;
 		};
-		HH0002AA /* Release */ = {
+		RELPROJ1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				COPY_PHASE_STRIP = NO;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_VARIABLE = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		HH0003AA /* Debug */ = {
+		DBGTGT01 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -357,15 +651,11 @@
 				CODE_SIGN_ENTITLEMENTS = Resources/OpenHealth.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 7KTLKHBKD8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OpenHealth;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -373,13 +663,15 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shersingh7.openhealth;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		HH0004AA /* Release */ = {
+		RELTGT01 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -387,15 +679,11 @@
 				CODE_SIGN_ENTITLEMENTS = Resources/OpenHealth.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 7KTLKHBKD8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OpenHealth;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -403,6 +691,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shersingh7.openhealth;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -412,25 +702,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FF0001AA /* Build configuration list for PBXNativeTarget "OpenHealth" */ = {
+		CFGLIST1 /* Build configuration list for PBXNativeTarget "OpenHealth" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				HH0003AA /* Debug */,
-				HH0004AA /* Release */,
+				DBGTGT01 /* Debug */,
+				RELTGT01 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		FF0004AA /* Build configuration list for PBXProject "OpenHealth" */ = {
+		CFGLIST0 /* Build configuration list for PBXProject "OpenHealth" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				HH0001AA /* Debug */,
-				HH0002AA /* Release */,
+				DBGPROJ1 /* Debug */,
+				RELPROJ1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = GG0001AA /* Project object */;
+	rootObject = PROJ0001 /* Project object */;
 }

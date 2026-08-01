@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  OpenHealth app icon source (1024×1024).
+
+  Solid fills only — no SVG filters, gradients, or stroke-based paths.
+  ImageMagick's SVG renderer does not reliably draw strokes; the export
+  arrow is therefore a filled polygon + rounded rects so regeneration is
+  deterministic.
+
+  Palette:
+    Background  #087CF2  brand blue
+    Shield      #FFFFFF  white
+    Heart       #EE3656  coral
+    Arrow       #FFFFFF  white northeast export gesture
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- Full-bleed opaque background -->
+  <rect width="1024" height="1024" fill="#087CF2"/>
+
+  <!-- Shield: white protective vessel (~12% safe margin from edges) -->
+  <path
+    d="M512 148
+       C632 148 720 184 766 218
+       C766 300 766 390 766 474
+       C766 642 650 770 512 862
+       C374 770 258 642 258 474
+       C258 390 258 300 258 218
+       C304 184 392 148 512 148 Z"
+    fill="#FFFFFF"/>
+
+  <!-- Heart: coral health mark inside the shield -->
+  <path
+    d="M512 676
+       C464 634 316 530 316 410
+       C316 314 438 278 512 380
+       C586 278 708 314 708 410
+       C708 530 560 634 512 676 Z"
+    fill="#EE3656"/>
+
+  <!--
+    Export arrow (NE): filled geometry only.
+    Diagonal shaft from (430,568)→(642,356), width ≈45.
+    Head: horizontal + vertical bars meeting at tip.
+  -->
+  <polygon
+    points="414.1,552.1 445.9,583.9 657.9,371.9 626.1,340.1"
+    fill="#FFFFFF"/>
+  <rect x="548" y="334" width="116" height="44" rx="22" ry="22" fill="#FFFFFF"/>
+  <rect x="620" y="334" width="44" height="116" rx="22" ry="22" fill="#FFFFFF"/>
+  <circle cx="642" cy="356" r="22" fill="#FFFFFF"/>
+</svg>

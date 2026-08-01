@@ -1,0 +1,146 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  core:
+    name: OpenHealthCore tests
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Swift version
+        run: swift --version
+      - name: Core tests (native harness)
+        run: |
+          set -euo pipefail
+          chmod +x Scripts/run_core_tests.sh
+          Scripts/run_core_tests.sh
+
+  static:
+    name: Static checks
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package describe
+        run: swift package describe
+      - name: Project references
+        run: python3 Scripts/validate_project_references.py
+      - name: Secret scan
+        run: python3 Scripts/check_secrets.py
+      - name: Plist lint
+        run: |
+          set -euo pipefail
+          plutil -lint Resources/Info.plist
+          plutil -lint Resources/OpenHealth.entitlements
+          plutil -lint Resources/PrivacyInfo.xcprivacy
+          plutil -lint OpenHealth.xcodeproj/project.pbxproj
+      - name: Asset catalog JSON
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, pathlib, sys
+          root = pathlib.Path("Resources/Assets.xcassets")
+          files = sorted(root.rglob("Contents.json"))
+          if not files:
+              print("No Contents.json under Assets.xcassets", file=sys.stderr)
+              sys.exit(1)
+          for path in files:
+              json.load(path.open(encoding="utf-8"))
+              print(f"OK {path}")
+          PY
+      - name: App icon mechanical checks
+        run: |
+          set -euo pipefail
+          ICON="Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png"
+          test -f "$ICON"
+          # Prefer sips (always on macOS runners); fall back to magick when present.
+          if command -v sips >/dev/null 2>&1; then
+            WIDTH=$(sips -g pixelWidth "$ICON" | awk '/pixelWidth/ {print $2}')
+            HEIGHT=$(sips -g pixelHeight "$ICON" | awk '/pixelHeight/ {print $2}')
+            HAS_ALPHA=$(sips -g hasAlpha "$ICON" | awk '/hasAlpha/ {print $2}')
+            test "$WIDTH" = "1024"
+            test "$HEIGHT" = "1024"
+            test "$HAS_ALPHA" = "no"
+          fi
+          if command -v magick >/dev/null 2>&1; then
+            MEAN=$(magick "$ICON" -format '%[fx:mean]' info:)
+            python3 - "$MEAN" <<'PY'
+          import sys
+          mean = float(sys.argv[1])
+          if mean < 0.25:
+              raise SystemExit(f"icon mean too low ({mean}); likely black placeholder")
+          print(f"icon mean={mean:.4f}")
+          PY
+            # Brand blue corner sample
+            RGB=$(magick "$ICON" -format '%[fx:int(255*p{16,16}.r)],%[fx:int(255*p{16,16}.g)],%[fx:int(255*p{16,16}.b)]' info:)
+            python3 - "$RGB" <<'PY'
+          import sys
+          r, g, b = map(int, sys.argv[1].split(","))
+          # Expect ~#087CF2 with generous tolerance
+          if abs(r - 8) > 40 or abs(g - 124) > 40 or abs(b - 242) > 40:
+              raise SystemExit(f"background not brand blue: rgb({r},{g},{b})")
+          if r < 20 and g < 20 and b < 20:
+              raise SystemExit(f"background is black: rgb({r},{g},{b})")
+          print(f"background rgb({r},{g},{b}) ok")
+          PY
+          else
+            echo "ImageMagick not installed; skipped color sampling (sips dimension/alpha still enforced when present)"
+          fi
+      - name: Swift parse (Foundation Core)
+        run: |
+          set -euo pipefail
+          files=()
+          while IFS= read -r f; do
+            files+=("$f")
+          done < <(find Core -name '*.swift' | sort)
+          swiftc -parse "${files[@]}"
+      - name: Swift parse (production sources when iOS SDK present)
+        run: |
+          set -euo pipefail
+          if ! xcrun --sdk iphonesimulator --show-sdk-path >/dev/null 2>&1; then
+            echo "iphonesimulator SDK not available; skipping full production parse"
+            exit 0
+          fi
+          SDK=$(xcrun --sdk iphonesimulator --show-sdk-path)
+          files=()
+          if git ls-files --error-unmatch '*.swift' >/dev/null 2>&1; then
+            while IFS= read -r f; do
+              case "$f" in
+                Tests/*) continue ;;
+                *) files+=("$f") ;;
+              esac
+            done < <(git ls-files '*.swift')
+          else
+            while IFS= read -r f; do
+              files+=("$f")
+            done < <(find App Core Infrastructure DesignSystem Features -name '*.swift' | sort)
+          fi
+          xcrun --sdk iphonesimulator swiftc -parse -sdk "$SDK" -target arm64-apple-ios17.0-simulator "${files[@]}"
+
+  xcode:
+    name: Xcode iOS Simulator build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: |
+          set -euo pipefail
+          if [[ ! -d /Applications/Xcode.app ]]; then
+            echo "Xcode.app not present on runner; failing xcode job"
+            exit 1
+          fi
+          sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+          xcodebuild -version
+      - name: Build for generic iOS Simulator
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -project OpenHealth.xcodeproj \
+            -scheme OpenHealth \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            build
